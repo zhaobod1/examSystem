@@ -217,6 +217,9 @@ class IndexController extends CommonController
 			$oneQuestion = Question::find($quest_id);
 			//这道题的答案
 			$quest = PaperQuestion::whereRaw('question_id=? and paper_id=?', [$quest_id, $this->getSessionPaperId()])->first();
+			if (!$quest) {
+				return redirect('index')->with('error', '题库已经更改,请重新考试!');
+			}
 			$quest_answer = $quest->quest_answer;
 			//答题过程
 			$quest_process = $quest->quest_process;
