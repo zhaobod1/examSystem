@@ -46,22 +46,22 @@ class IndexController extends CommonController
 			} else {
 				$input['user_password'] = Crypt::encrypt($input['user_password']);
 			}
-
+			$session_user = session('user');
+			$currPhone = $session_user->user_phone;
 			$oneUser = User::where('user_name', $input['user_phone'])->first();
-			if ($oneUser) {
+			if ($oneUser && $input['user_phone']!=$currPhone) {
 				return redirect('index')->with('errors', '手机号码已经存在!');
 			}
 			$oneUser = User::where('user_phone', $input['user_phone'])->first();
-			if ($oneUser) {
+			if ($oneUser && $input['user_phone']!=$currPhone) {
 				return redirect('index')->with('errors', '手机号码已经存在!');
 			}
-			$res = User::where('user_name', session('user')->user_name)
+			$res = User::where('user_id', session('user')->user_id)
 				->update($input);
-
 			if ($res) {
 				return redirect('index')->with('errors', '个人信息更新成功!');
 			} else {
-				return redirect()->back()->with('errors', '个人信息更新失败!');
+				return redirect()->back()->with('errors', '个人信息更新失败! 可能原因：您的信息未做任何修改');
 			}
 
 		}
