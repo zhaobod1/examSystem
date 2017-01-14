@@ -47,7 +47,6 @@ Route::group(['middleware' => ['web', 'admin.login'], 'prefix' => 'admin', 'name
     Route::get('quit', 'LoginController@quit');
     Route::any('password', 'IndexController@password');
 
-
 	//question
     Route::any('question', 'QuestionController@index');
     Route::any('question/create', 'QuestionController@create');

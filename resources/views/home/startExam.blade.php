@@ -71,6 +71,7 @@
                 <form class="" id="submitForm" action="">
                     {{ csrf_field() }}
                     <div class="form-group">
+                        <input type="hidden" value="{{ $examTime }}" id="examTime">
                         <textarea name="quest_process" id="quest_process" cols="30" rows="5" class="form-control" placeholder="请输入答题过程">{{ $quest_process }}</textarea>
                     </div>
                     <div class="form-group">
@@ -193,10 +194,11 @@
 
 
             /* 倒计时 */
+            var examTime = parseInt($("#examTime").val());
             var start_time = {{ $time }}*1000;
             $('#timeKeeper').text('60:00');
 
-            var totalTime = 60*60*1000;
+            var totalTime = examTime*60*1000;
             var nowTimestamp = new Date().getTime();
 
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Home;
 
 use App\Http\Model\PaperInfo;
+use App\Http\Model\QuestConfig;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -17,6 +18,17 @@ class CommonController extends Controller
 		$sessionUser = session('user');
 		return $sessionUser->user_check;
 		/*判断审核 end*/
+	}
+
+	public function checkSystemStatus()
+	{
+		$isClosed = QuestConfig::find(1)->value('field_value');
+		return $isClosed;
+	}
+	public function getExamTime()
+	{
+		$examTime = QuestConfig::find(2)->value('field_value');
+		return $examTime;
 	}
 
 	public function getSessionPaperId()

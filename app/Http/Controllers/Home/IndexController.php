@@ -169,6 +169,14 @@ class IndexController extends CommonController
 	public function startExam($quest_id = null)
 	{
 
+		//检测是否关闭了答题功能
+		$isclosed = $this->checkSystemStatus();
+		if ($isclosed == 0) {
+			return redirect('/')->with('errors',"现在不是答题时间，请在考试时间内进行答题！");
+		}
+		//考试时间
+		$examTime = $this->getExamTime();
+
 		//检测审核
 		if (!$this->userCheck()) {
 			return redirect('/');
@@ -421,7 +429,8 @@ class IndexController extends CommonController
 				'quest_answer',
 				'quest_process',
 				'totalQuestions',
-				'leftQuestions'
+				'leftQuestions',
+				'examTime'
 			)
 		);
 
