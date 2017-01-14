@@ -76,8 +76,8 @@
 @show
 <!--导航条 end-->
 <ol class="breadcrumb">
-    <li><a href="{{ url("usercenter") }}">{{ session('user')->user_neckname ? session('user')->user_neckname : "匿名" }}</a></li>
-    <li><a href="{{ url("usercenter") }}">{{ session('user')->user_phone? session('user')->user_phone : "未设置手机号" }}</a></li>
+    <li><a href="javascript:;">{{ session('user')?(session('user')->user_neckname ? session('user')->user_neckname : "匿名") : "" }}</a></li>
+    <li><a href="javascript:;">{{ session('user')?(session('user')->user_phone? session('user')->user_phone : "未设置手机号"):"" }}</a></li>
 </ol>
 @yield('content')
 

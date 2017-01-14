@@ -63,7 +63,10 @@ class IndexController extends CommonController
 			}
 			$res = User::where('user_id', session('user')->user_id)
 				->update($input);
+
 			if ($res) {
+				$session_user->user_neckname = $input['user_neckname'];
+				$session_user->user_phone = $input['user_phone'];
 				return redirect('index')->with('errors', '个人信息更新成功!');
 			} else {
 				return redirect()->back()->with('errors', '个人信息更新失败! 可能原因：您的信息未做任何修改');
