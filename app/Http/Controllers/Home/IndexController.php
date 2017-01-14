@@ -22,6 +22,11 @@ class IndexController extends CommonController
 	//
 	public function index()
 	{
+		if ($this->checkNicknameAndPhone()) {
+			return redirect("usercenter")->with('errors', "请先填写姓名和手机号码再开始答题");
+
+		}
+
 		$isChecked = false;
 		if (!$this->userCheck()) {
 			$userCheck = '管理员审核通过才可以答题! 右上角菜单按钮联系管理员。';
@@ -168,6 +173,10 @@ class IndexController extends CommonController
 
 	public function startExam($quest_id = null)
 	{
+		if ($this->checkNicknameAndPhone()) {
+			return redirect("usercenter")->with('errors', "请先填写姓名和手机号码再开始答题");
+
+		}
 
 		//检测是否关闭了答题功能
 		$isclosed = $this->checkSystemStatus();

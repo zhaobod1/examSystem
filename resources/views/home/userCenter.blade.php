@@ -33,8 +33,8 @@
                                 $user->user_name }}">
                             </div>
                             <div class="form-group">
-                                <label class="">昵称</label>
-                                <input type="text" name="user_neckname" class="form-control" placeholder="起个昵称吧" value="{{
+                                <label class="">学生姓名</label>
+                                <input type="text" name="user_neckname" class="form-control" placeholder="填写正确的姓名" value="{{
                                 $user->user_neckname }}">
                             </div>
                             <div class="form-group">

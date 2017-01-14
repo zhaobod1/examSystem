@@ -11,6 +11,14 @@ use App\Http\Controllers\Controller;
 
 class CommonController extends Controller
 {
+	public function checkNicknameAndPhone()
+	{
+		$user = session('user');
+		if ($user->user_neckname=="" || strlen($user->user_phone)< 11) {
+			return true;
+		}
+		return false;
+	}
 
 	public function userCheck()
 	{
