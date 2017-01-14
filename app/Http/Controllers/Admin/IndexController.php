@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Model\QuestConfig;
 use App\Http\Model\User;
 use Illuminate\Http\Request;
 
@@ -61,5 +62,30 @@ class IndexController extends CommonController
             return view('admin.password');
 
         }
+    }
+
+	public function sysSetting()
+	{
+		if (Input::all()) {
+			$input = Input::except('_token', '_method');
+			if(!isset($input['isCloseSystem'])) {
+				$input['isCloseSystem'] = 0;
+			} else {
+				if ($input['isCloseSystem'] == 'true') {
+					$input['isCloseSystem'] =1;
+				}
+			}
+			QuestConfig::find(1)->update([
+				"field_value" => $input['isCloseSystem']
+			]);
+			QuestConfig::find(2)->update([
+				"field_value" => $input['examTime']
+			]);
+
+			return back()->with('errors', '系统设置成功!');
+		}
+		$aSet['isCloseSystem'] = QuestConfig::where('conf_name', 'isCloseSystem')->value('field_value');
+		$aSet['examTime'] = QuestConfig::where('conf_name', 'examTime')->value('field_value');
+		return view("admin.syssetting",compact('aSet'));
     }
 }

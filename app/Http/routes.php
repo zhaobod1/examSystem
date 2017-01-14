@@ -43,6 +43,7 @@ Route::group(['middleware' => ['web', 'admin.login'], 'prefix' => 'admin', 'name
     Route::get('index', 'IndexController@index');
     Route::get('/', 'IndexController@index');
     Route::get('info', 'IndexController@info');
+    Route::any('syssetting', 'IndexController@sysSetting');
     Route::get('quit', 'LoginController@quit');
     Route::any('password', 'IndexController@password');
 

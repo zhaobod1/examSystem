@@ -33,6 +33,10 @@
                     fa-user-plus"></i>添加会员</a></li>
                     <li><a href="{{ url('admin/users') }}" target="main"><i class="fa fa-fw
                     fa-users"></i>会员列表</a></li>
+
+                    <li>
+                        <a href="{{ url('admin/syssetting') }}" target="main">
+                            <i class="fa fa-fw fa-adn"></i>系统设置</a></li>
                 </ul>
             </li>
             <li>
