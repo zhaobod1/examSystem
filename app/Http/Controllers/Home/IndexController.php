@@ -526,6 +526,7 @@ class IndexController extends CommonController
 
 		$user = session('user');
 		$papers = PaperInfo::where('user_id', $user->user_id)
+			->orderBy("updated_at", "DESC")
 			->paginate(5);
 		$pageTitle = '历史试卷';
 		return view('home.recentPapers', compact(
