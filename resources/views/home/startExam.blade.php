@@ -76,7 +76,7 @@
                     </div>
                     <div class="form-group">
                         <input type="hidden" name="question_id" value="{{ $oneQuestion->question_id }}">
-                        <input id="inputTxt"  name="quest_answer"  style="width: 100%;" value="{{ $quest_answer }}"  class="form-control" type="text" placeholder="请输入最终答案，只能输入数字">
+                        <input id="inputTxt"  name="quest_answer"  style="width: 100%;" value="{{ $quest_answer }}"  class="form-control" type="number" placeholder="请输入最终答案，只能输入数字">
                     </div>
                 </form>
 
