@@ -90,7 +90,7 @@
                 </btn-group>
             </div>
             <div class="col-xs-10 col-md-10">
-                <div class="btn-group btn-group-lg" style="float: right;">
+                <div class="btn-group" style="float: right;">
                     <a  href="{{ $preId ? url('startexam') . '/' . $preId : 'javacript:void(0);' }}" class="btn
                     btn-default">{{ $preId ? '上一题' : '无上题' }}</a>
                     <a id="submitBtn" class="btn btn-primary">提交</a>

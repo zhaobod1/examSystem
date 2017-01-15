@@ -3,11 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="e0cc61cc-9d19-4837-b7b3-69ac3a997a29" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/Controllers/Home/CommonController.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/Home/CommonController.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/Controllers/Home/IndexController.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/Home/IndexController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/admin/question/index.blade.php" afterPath="$PROJECT_DIR$/resources/views/admin/question/index.blade.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/home/startExam.blade.php" afterPath="$PROJECT_DIR$/resources/views/home/startExam.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/home/userCenter.blade.php" afterPath="$PROJECT_DIR$/resources/views/home/userCenter.blade.php" />
     </list>
     <ignored path="question.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -31,11 +28,9 @@
       <file leaf-file-name="routes.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/Http/routes.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1786">
-              <caret line="103" column="26" selection-start-line="103" selection-start-column="16" selection-end-line="103" selection-end-column="26" />
-              <folding>
-                <element signature="e#7#385#0#PHP" expanded="false" />
-              </folding>
+            <state relative-caret-position="111">
+              <caret line="105" column="22" selection-start-line="105" selection-start-column="16" selection-end-line="105" selection-end-column="22" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -43,14 +38,14 @@
       <file leaf-file-name="IndexController.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Home/IndexController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="216">
-              <caret line="189" column="33" selection-start-line="189" selection-start-column="33" selection-end-line="189" selection-end-column="33" />
+            <state relative-caret-position="83">
+              <caret line="184" column="42" selection-start-line="184" selection-start-column="42" selection-end-line="184" selection-end-column="42" />
               <folding>
                 <element signature="e#858#2248#0#PHP" expanded="false" />
                 <element signature="e#2259#5197#0#PHP" expanded="false" />
-                <element signature="e#5682#6506#0#PHP" expanded="false" />
-                <element signature="e#6608#13074#0#PHP" expanded="false" />
-                <element signature="e#8011#13036#0#PHP" expanded="false" />
+                <element signature="e#5792#6616#0#PHP" expanded="false" />
+                <element signature="e#6718#13184#0#PHP" expanded="false" />
+                <element signature="e#8121#13146#0#PHP" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -70,41 +65,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="index.blade.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/resources/views/admin/index.blade.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="532">
-              <caret line="28" column="59" selection-start-line="28" selection-start-column="59" selection-end-line="28" selection-end-column="59" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="userCenter.blade.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/resources/views/home/userCenter.blade.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="779">
-              <caret line="41" column="113" selection-start-line="41" selection-start-column="113" selection-end-line="41" selection-end-column="113" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="startExam.blade.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/resources/views/home/startExam.blade.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="241">
-              <caret line="141" column="12" selection-start-line="141" selection-start-column="12" selection-end-line="141" selection-end-column="12" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="CommonController.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Home/CommonController.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="152">
-              <caret line="37" column="61" selection-start-line="37" selection-start-column="61" selection-end-line="37" selection-end-column="61" />
+            <state relative-caret-position="159">
+              <caret line="92" column="37" selection-start-line="92" selection-start-column="37" selection-end-line="92" selection-end-column="37" />
               <folding />
             </state>
           </provider>
@@ -123,7 +88,7 @@
       <file leaf-file-name="IndexController.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Admin/IndexController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1064">
+            <state relative-caret-position="912">
               <caret line="86" column="104" selection-start-line="86" selection-start-column="81" selection-end-line="86" selection-end-column="104" />
               <folding>
                 <element signature="e#566#1656#0#PHP" expanded="false" />
@@ -188,9 +153,9 @@
         <option value="$PROJECT_DIR$/resources/views/layouts/home.blade.php" />
         <option value="$PROJECT_DIR$/resources/views/home/userCenter.blade.php" />
         <option value="$PROJECT_DIR$/resources/views/admin/question/index.blade.php" />
-        <option value="$PROJECT_DIR$/app/Http/Controllers/Home/IndexController.php" />
         <option value="$PROJECT_DIR$/app/Http/Controllers/Home/CommonController.php" />
         <option value="$PROJECT_DIR$/resources/views/home/startExam.blade.php" />
+        <option value="$PROJECT_DIR$/app/Http/Controllers/Home/IndexController.php" />
       </list>
     </option>
   </component>
@@ -250,6 +215,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -405,7 +371,6 @@
         </subPane>
       </pane>
       <pane id="Scope" />
-      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -551,7 +516,8 @@
       <workItem from="1484071390755" duration="87000" />
       <workItem from="1484102371623" duration="493000" />
       <workItem from="1484281411215" duration="20093000" />
-      <workItem from="1484446455861" duration="648000" />
+      <workItem from="1484446455861" duration="701000" />
+      <workItem from="1484451238631" duration="581000" />
     </task>
     <task id="LOCAL-00001" summary="modify undefined index：user_name  LoginController.php line20">
       <created>1483967293493</created>
@@ -595,22 +561,29 @@
       <option name="project" value="LOCAL" />
       <updated>1484398214140</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="add margin-bottom to startExam">
+      <created>1484447128444</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1484447128444</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="218547000" />
+    <option name="totallyTimeSpent" value="219181000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1280" height="713" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32928804" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.28398058" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.28883496" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32753164" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="File Transfer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3252818" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="File Transfer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3252818" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.22383253" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -664,7 +637,8 @@
     <MESSAGE value="add system setting page." />
     <MESSAGE value="time controll." />
     <MESSAGE value="add name and phone show." />
-    <option name="LAST_COMMIT_MESSAGE" value="add name and phone show." />
+    <MESSAGE value="add margin-bottom to startExam" />
+    <option name="LAST_COMMIT_MESSAGE" value="add margin-bottom to startExam" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -959,20 +933,10 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Admin/IndexController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1064">
+        <state relative-caret-position="912">
           <caret line="86" column="104" selection-start-line="86" selection-start-column="81" selection-end-line="86" selection-end-column="104" />
           <folding>
             <element signature="e#566#1656#0#PHP" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/routes.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1786">
-          <caret line="103" column="26" selection-start-line="103" selection-start-column="16" selection-end-line="103" selection-end-column="26" />
-          <folding>
-            <element signature="e#7#385#0#PHP" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -981,14 +945,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="342">
           <caret line="18" column="0" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/admin/index.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="532">
-          <caret line="28" column="59" selection-start-line="28" selection-start-column="59" selection-end-line="28" selection-end-column="59" />
           <folding />
         </state>
       </provider>
@@ -1006,8 +962,16 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/resources/views/home/userCenter.blade.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="779">
+        <state relative-caret-position="324">
           <caret line="41" column="113" selection-start-line="41" selection-start-column="113" selection-end-line="41" selection-end-column="113" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/admin/index.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="324">
+          <caret line="28" column="59" selection-start-line="28" selection-start-column="59" selection-end-line="28" selection-end-column="59" />
           <folding />
         </state>
       </provider>
@@ -1024,16 +988,24 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/Http/routes.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="111">
+          <caret line="105" column="22" selection-start-line="105" selection-start-column="16" selection-end-line="105" selection-end-column="22" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Home/IndexController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="216">
-          <caret line="189" column="33" selection-start-line="189" selection-start-column="33" selection-end-line="189" selection-end-column="33" />
+        <state relative-caret-position="83">
+          <caret line="184" column="42" selection-start-line="184" selection-start-column="42" selection-end-line="184" selection-end-column="42" />
           <folding>
             <element signature="e#858#2248#0#PHP" expanded="false" />
             <element signature="e#2259#5197#0#PHP" expanded="false" />
-            <element signature="e#5682#6506#0#PHP" expanded="false" />
-            <element signature="e#6608#13074#0#PHP" expanded="false" />
-            <element signature="e#8011#13036#0#PHP" expanded="false" />
+            <element signature="e#5792#6616#0#PHP" expanded="false" />
+            <element signature="e#6718#13184#0#PHP" expanded="false" />
+            <element signature="e#8121#13146#0#PHP" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1041,21 +1013,21 @@
     <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Home/CommonController.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="152">
-          <caret line="37" column="61" selection-start-line="37" selection-start-column="61" selection-end-line="37" selection-end-column="61" />
+          <caret line="30" column="20" selection-start-line="30" selection-start-column="20" selection-end-line="30" selection-end-column="20" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/resources/views/home/startExam.blade.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="241">
-          <caret line="141" column="12" selection-start-line="141" selection-start-column="12" selection-end-line="141" selection-end-column="12" />
+        <state relative-caret-position="159">
+          <caret line="92" column="37" selection-start-line="92" selection-start-column="37" selection-end-line="92" selection-end-column="37" />
           <folding />
         </state>
       </provider>
     </entry>
   </component>
   <component name="webServersAuthStorage">
-    <data>AAAAsBVZnIIkYrfus6MggQxvn7RVAe0nhipdfEisbqLw2yWRZBNzSjrBjojHPL8co+rpjX7byUsQrzsNlZZ7OK0dWnhXbu19E65OIoAoNA2EH0zuA9N2Xg+FHDeTJS1lthgNF1mTh/B4DpZr5CgQFvvoyKxjkWOHSl07OLSdzW14CrVtyiLpalLZfL6ySWynHSLhjM1uOvFi1J4WDpbOUFCxJjzG26qjCWmOGZUVWTekhSS3uMst9IpQyvEu5uTWk2vscQ==</data>
+    <data>AAAAsM54l/dlRzNSzIUNZr0h5hF9hKuKh5wdfSVyPg1FB4Z+gCWxZ39Lau7a8Hza6FOkNTKDJ0XZbtB2fWmUbpkBwSlReC07vAxE2cvBs7iTk1FInOPVDyvOTTWpuID4Meu5AzjlV6HMlzw7/n6R/+54wj3xEo8SnYbcEo3wD+kvKzNjLJuLaRSOTA8wBEQ7aJbaWIeNvzab9Rra+iGCxZYtK68FWVu3CKlMUnxXqYrrIRiWbk/vPL5zBwYb6mtSceriAg==</data>
   </component>
 </project>
