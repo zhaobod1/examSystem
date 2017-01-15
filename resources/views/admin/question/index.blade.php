@@ -41,8 +41,8 @@
             <div class="result_content">
                 <div class="short_wrap">
                     <a href="{{ url('admin/question/create') }}"><i class="fa fa-plus"></i>新增题目</a>
-                    <a href="#"><i class="fa fa-recycle"></i>批量删除</a>
-                    <a href="#"><i class="fa fa-refresh"></i>更新排序</a>
+                    <a href="#"><i class="fa fa-recycle"></i>批量出库</a>
+                    <a href="#"><i class="fa fa-refresh"></i>批量入库</a>
                     <a href="javascript:void(0);">
                         题库数量: <span style="color: #f254b6;">{{ $sumQuestion }}</span>
                     </a>

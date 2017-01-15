@@ -30,12 +30,12 @@ class CommonController extends Controller
 
 	public function checkSystemStatus()
 	{
-		$isClosed = QuestConfig::find(1)->value('field_value');
+		$isClosed = QuestConfig::where("conf_name", "isCloseSystem")->value('field_value');
 		return $isClosed;
 	}
 	public function getExamTime()
 	{
-		$examTime = QuestConfig::find(2)->value('field_value');
+		$examTime = QuestConfig::where("conf_name", "examTime")->value('field_value');
 		return $examTime;
 	}
 

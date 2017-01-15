@@ -134,6 +134,9 @@
         .hand-in-wrapper {
             display: none;
         }
+        .amplifyImg {
+            margin-bottom: 250px;
+        }
     </style>
     <!--答题页面js-->
     <script>
@@ -215,7 +218,6 @@
                 leftTime = leftTime - 1000;
                 if (leftTime <=0) {
                     window.location.href = '{{ url("handin") }}';
-                    console.log(leftTime)
                 }
             }
 

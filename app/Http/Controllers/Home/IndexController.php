@@ -55,11 +55,11 @@ class IndexController extends CommonController
 			$currPhone = $session_user->user_phone;
 			$oneUser = User::where('user_name', $input['user_phone'])->first();
 			if ($oneUser && $input['user_phone']!=$currPhone) {
-				return redirect('index')->with('errors', '手机号码已经存在!');
+				return redirect('index')->with('errors', '手机号码已经存在!请换一个手机号码');
 			}
 			$oneUser = User::where('user_phone', $input['user_phone'])->first();
 			if ($oneUser && $input['user_phone']!=$currPhone) {
-				return redirect('index')->with('errors', '手机号码已经存在!');
+				return redirect('index')->with('errors', '手机号码已经存在!请用微信方式登录');
 			}
 			$res = User::where('user_id', session('user')->user_id)
 				->update($input);
@@ -326,7 +326,8 @@ class IndexController extends CommonController
 					}
 
 				} else {
-					dd("o:".$user->start_exam);
+					//不存在答完的试卷。
+					//dd("o:".$user->start_exam);
 					$user->start_exam = 0;
 					$res = $this->exam($user);
 					$oneQuestion = $res["oneQuestion"];

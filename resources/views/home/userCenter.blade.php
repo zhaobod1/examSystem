@@ -39,7 +39,7 @@
                             </div>
                             <div class="form-group">
                                 <label class="">手机号码</label>
-                                <input type="text" name="user_phone" class="form-control" placeholder=""
+                                <input type="text" name="user_phone" class="form-control" placeholder="请输入正确的手机号码"
                                        value="{{ $user->user_phone }}">
                             </div>
                             <div class="form-group">
