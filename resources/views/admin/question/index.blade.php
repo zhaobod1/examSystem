@@ -41,8 +41,8 @@
             <div class="result_content">
                 <div class="short_wrap">
                     <a href="{{ url('admin/question/create') }}"><i class="fa fa-plus"></i>新增题目</a>
-                    <a href="#"><i class="fa fa-recycle"></i>批量出库</a>
-                    <a href="#"><i class="fa fa-refresh"></i>批量入库</a>
+                    <a id="out_put" href="#"><i class="fa fa-recycle"></i>批量出库</a>
+                    <a id="laid_in" href="#"><i class="fa fa-refresh"></i>批量入库</a>
                     <a href="javascript:void(0);">
                         题库数量: <span style="color: #f254b6;">{{ $sumQuestion }}</span>
                     </a>
@@ -58,7 +58,7 @@
             <div class="result_content">
                 <table class="list_tab">
                     <tr>
-                        <th class="tc" width="5%"><input type="checkbox" name=""></th>
+                        <th class="tc" width="5%"><input type="checkbox" id="checkAll" name=""></th>
                         <th class="tc">排序</th>
                         <th class="tc">ID</th>
                         <th>标题</th>
@@ -68,9 +68,78 @@
                         <th>更新时间</th>
                         <th>操作</th>
                     </tr>
+                    <script>
+                        $(function () {
+                            $("input[type='checkbox']").unbind('click');
+
+                            //全选
+                            $("#checkAll").click(function (e) {
+                                if ($(this).prop("checked")) {
+                                    $("input[name='id_check']").prop("checked", true);
+                                } else {
+                                    $("input[name='id_check']").prop("checked", false);
+
+                                }
+//                                $("input[name='id_check']").prop("checked", !$(this).prop("checked"))
+                            });
+
+                            //批量入库
+                            $("#laid_in").click(function (e) {
+                                e.preventDefault();
+                                var data = [];
+                                $("input[name='id_check']:checked:checked").each(function (index, element) {
+                                    data.push($(this).val());
+
+                                });
+                                console.log('data:', data);
+                                $.post(
+                                        'question/ajax?act=laid_in',
+                                        {
+                                            data:data,
+                                            '_token':"{{csrf_token() }}"
+                                        },
+                                        function (res) {
+                                            if (res) {
+                                                window.location.href = 'question';
+                                            } else {
+                                                alert("批量更新出错")
+                                            }
+                                        },
+                                        'json'
+                                );
+                            });
+                            //批量出库
+                            $("#out_put").click(function (e) {
+                                e.preventDefault();
+                                var data = [];
+                                $("input[name='id_check']:checked:checked").each(function (index, element) {
+                                    data.push($(this).val());
+
+                                });
+                                console.log('data:', data);
+                                $.post(
+                                        'question/ajax?act=out_put',
+                                        {
+                                            data:data,
+                                            '_token':"{{csrf_token() }}"
+                                        },
+                                        function (res) {
+                                            if (res) {
+                                                window.location.href = 'question';
+                                            } else {
+                                                alert("批量更新出错")
+                                            }
+                                        },
+                                        'json'
+                                );
+                            });
+                        });
+                    </script>
                     @foreach($datas as $data)
                     <tr>
-                        <td class="tc"><input type="checkbox" name="id[]" value="59"></td>
+                        <td class="tc">
+                            <input type="checkbox" name="id_check" value="{{ $data->question_id }}">
+                        </td>
                         <td class="tc">
                             <input type="text" name="ord[]" value="{{ $data->question_order }}">
                         </td>

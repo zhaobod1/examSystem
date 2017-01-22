@@ -50,6 +50,27 @@ class QuestionController extends CommonController
         return view('admin.question.index', compact('datas', 'sumScore', 'sumQuestion', 'category'));
     }
 
+    public function ajax() {
+		$act = isset($_REQUEST['act'])? $_REQUEST['act']:0;
+	    if ($act == 'laid_in') {
+		    $datas = $_POST['data'];
+		    foreach ($datas as $data) {
+			    $question = Question::find($data);
+			    $question->question_is_quest_bank = 1;
+			    $question->save();
+		    }
+	    }
+	    if ($act == 'out_put') {
+		    $datas = $_POST['data'];
+		    foreach ($datas as $data) {
+			    $question = Question::find($data);
+			    $question->question_is_quest_bank = 0;
+			    $question->save();
+		    }
+	    }
+
+	    echo json_encode(1);die;
+    }
     public function create()
     {
         $data = [];
