@@ -8,4 +8,4 @@ Homestead.json
 .env
 package.json
 gulpfile.js
-question.sql
+*.sql

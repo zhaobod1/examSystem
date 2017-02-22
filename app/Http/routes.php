@@ -53,6 +53,7 @@ Route::group(['middleware' => ['web', 'admin.login'], 'prefix' => 'admin', 'name
 	//question
     Route::any('question', 'QuestionController@index');
     Route::any('question/create', 'QuestionController@create');
+    Route::any('question/exportAnalysis', 'QuestionController@analysis');
     Route::any('question/{question_id}/edit', 'QuestionController@edit');
     Route::any('question/{question_id}/update', 'QuestionController@update');
     Route::any('question/store', 'QuestionController@store');

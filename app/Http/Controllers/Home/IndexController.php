@@ -294,7 +294,12 @@ class IndexController extends CommonController
 						$goQuestion = PaperQuestion::whereRaw('paper_id=?', [$this->getSessionPaperId()])
 							->orderBy('question_order', 'ASC')
 							->first();
-						$oneQuestion = Question::find($goQuestion->question_id);
+						if ($goQuestion) {
+							$oneQuestion = Question::find($goQuestion->question_id);
+
+						} else {
+							return redirect('handin');
+						}
 
 					}
 					//这道题的答案
