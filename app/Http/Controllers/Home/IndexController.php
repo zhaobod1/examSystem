@@ -54,11 +54,11 @@ class IndexController extends CommonController
 			$session_user = session('user');
 			$currPhone = $session_user->user_phone;
 			$oneUser = User::where('user_name', $input['user_phone'])->first();
-			if ($oneUser && $input['user_phone']!=$currPhone) {
+			if ($oneUser && $input['user_phone'] != $currPhone) {
 				return redirect('index')->with('errors', '手机号码已经存在!请换一个手机号码');
 			}
 			$oneUser = User::where('user_phone', $input['user_phone'])->first();
-			if ($oneUser && $input['user_phone']!=$currPhone) {
+			if ($oneUser && $input['user_phone'] != $currPhone) {
 				return redirect('index')->with('errors', '手机号码已经存在!请用微信方式登录');
 			}
 			$res = User::where('user_id', session('user')->user_id)
@@ -84,96 +84,13 @@ class IndexController extends CommonController
 		return view('home.userCenter', compact('user', 'pageTitle'));
 	}
 
-	//全新答题
-	public function exam($user)
-	{
-		//记录开始考试时间
-		$time = time();
-		$user->start_exam = $time;
-		session(['user' => $user]);
-		DB::beginTransaction();
-		$paper_info = new PaperInfo();
-		$paper_info->user_id = $user->user_id;
-		$paper_info->created_at = $user->start_exam;
-		/* 题目存入数据库 */
-		if ($paper_info->save()) {
-			//把题库存入历史试卷
-			$questions = DB::table('question')->where('question_is_quest_bank', 1)->get();
-			foreach ($questions as $key => $question) {
-				$insertArr[$key]['question_answer'] = $question->question_answer;
-				$insertArr[$key]['question_id'] = $question->question_id;
-				$insertArr[$key]['question_title'] = $question->question_title;
-				$insertArr[$key]['question_score'] = $question->question_score;
-				$insertArr[$key]['question_order'] = $question->question_order;
-				$insertArr[$key]['paper_id'] = $paper_info->paper_id;
-			}
-			//记录paper_id
-			session(['paper_id' => $paper_info->paper_id]);
-			$res3 = DB::table('paper_questions')->insert($insertArr);
-			if ($res3) {
-				DB::commit();
-				//回到主作用域返回第一道没有做的题目
-			} else {
-				DB::rollback();
-				return redirect('index')->with('error', '数据库更新出错,请重新考试!');
-			}
-		} else {
-			DB::rollback();
-			return redirect('index')->with('error', '数据库更新出错,请重新考试!');
-		}
-		/* 题目存入数据库 end */
-
-		//把没有做的第一道考题显示出来
-		$goQuestion = PaperQuestion::whereRaw('quest_answer=? and paper_id=?', ['', $this->getSessionPaperId()])
-			->orderBy('question_order', 'ASC')
-			->first();
-		if ($goQuestion) {
-			$oneQuestion = Question::find($goQuestion->question_id);
-		} else {
-			$goQuestion = PaperQuestion::whereRaw('paper_id=?', [$this->getSessionPaperId()])
-				->orderBy('question_order', 'ASC')
-				->first();
-			$oneQuestion = Question::find($goQuestion->question_id);
-		}
-		$res["oneQuestion"] = $oneQuestion;
-		//这道题的答案
-		$res["quest_answer"] = $quest_answer = $goQuestion->quest_answer;
-		//这道题的答题过程
-		$res["quest_process"] = $quest_process = $goQuestion->quest_process;
-		//题目总数
-		$res["totalQuestions"] = $totalQuestions = Question::where('question_is_quest_bank', 1)->count();
-		//剩余题目
-		$res["leftQuestions"] = $leftQuestions = PaperQuestion::whereRaw('quest_answer=? and paper_id=?', ['', session('paper_id')])
-			->count();
 
 
-		//前一道题ID
-		$preOrder = PaperQuestion::whereRaw('question_order<? and paper_id=?', [$oneQuestion->question_order, session('paper_id')])
-			->max('question_order');
-		if ($preOrder != null) {
-			$preQuest = Question::where('question_order', $preOrder)->first();
-			$preId = $preQuest->question_id;
-		} else {
-			$preId = null;
-		}
-		$res["preId"] = $preId;
-
-		//下一道题ID
-		$nextOrder = PaperQuestion::whereRaw('question_order>? and paper_id=?', [$oneQuestion->question_order, session('paper_id')])
-			->min('question_order');
-
-		if ($nextOrder != null) {
-			$nextQuest = Question::where('question_order', $nextOrder)->first();
-			$nextId = $nextQuest->question_id;
-		} else {
-			$nextId = null;
-		}
-		$res["nextId"] = $nextId;
-
-
-		return $res;
-	}
-
+	/**
+	 * 开始答题
+	 * @param null int $quest_id
+	 * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|\Illuminate\View\View
+	 */
 	public function startExam($quest_id = null)
 	{
 		/* 青岛火一五信息科技有限公司huo15.com 检查是否填写个人信息，如果没有填写，转到个人中心。 日期：2017/3/13 */
@@ -181,6 +98,7 @@ class IndexController extends CommonController
 			return redirect("usercenter")->with('errors', "请先填写姓名和手机号码再开始答题");
 
 		}
+
 		/* 青岛火一五信息科技有限公司huo15.com 检查是否填写个人信息，如果没有填写，转到个人中心。 日期：2017/3/13 end */
 
 
@@ -192,29 +110,29 @@ class IndexController extends CommonController
 			if ($time) {
 				return redirect("handin");
 			}
-			return redirect('/')->with('errors',"现在不是答题时间，请在考试时间内进行答题！");
+			return redirect('/')->with('errors', "现在不是答题时间，请在考试时间内进行答题！");
+		}
+		//检测审核
+		if (!$this->userCheck()) {
+			return redirect('/');
 		}
 		/* 青岛火一五信息科技有限公司huo15.com 检测是否关闭了答题功能 日期：2017/3/13 end */
 
 
 		/* 青岛火一五信息科技有限公司huo15.com 初始化 日期：2017/3/13 */
-		//系统设定的考试时间
+		//获取系统设定的考试时间
 		$examTime = $this->getExamTime();
+		//获取session的user数据。
+		$user = session('user');
+		$time = $user->start_exam;//记录考试的开始时间，0代表没有考试。
 		/* 青岛火一五信息科技有限公司huo15.com 初始化 日期：2017/3/13 end */
 
-
-
-
-		//检测审核
-		if (!$this->userCheck()) {
-			return redirect('/');
-		}
 
 		/* 处理提交的答案 */
 		$input = Input::except('_token');
 		if ($input) {
-			if(!isset($input["quest_answer"])) {
-				$question_id = isset($input['question_id'])? intval($input['question_id']) : "";
+			if (!isset($input["quest_answer"])) {
+				$question_id = isset($input['question_id']) ? intval($input['question_id']) : "";
 
 				return redirect('startexam/' . $question_id)->with('errors', '提交答案不能为空！');
 
@@ -233,7 +151,7 @@ class IndexController extends CommonController
 
 			if ($validator->passes()) {
 				$question_id = intval($input['question_id']);
-				$res = PaperQuestion::whereRaw('question_id=? and paper_id=?', [$question_id, $this->getSessionPaperId()])
+				$res = PaperQuestion::whereRaw('question_id=? and paper_id=?', [$question_id, $user->paper_id])
 					->update([
 						'quest_answer' => $input['quest_answer'],
 						'quest_process' => $input['quest_process']
@@ -249,217 +167,135 @@ class IndexController extends CommonController
 		}
 		/* 处理提交的答案 end */
 
-		//获取session的user数据。
-		$user = session('user');
-		$time = $user->start_exam;
+		/* 青岛火一五信息科技有限公司huo15.com 判断是否存在没有答完的试卷，并获取题目列表 日期：2017/3/13 */
+		if ($time == 0) {//没有未答完的试卷
+			/* 记录考试开始时间，存入数据库  2017/3/13 */
+			$time = time();
+			$user->start_exam = $time;
+			session(['user' => $user]);
+			$user->update();
+			/* 记录考试开始时间，存入数据库 2017/3/13 end*/
+
+			DB::beginTransaction();
+			$paper_info = new PaperInfo();
+			$paper_info->user_id = $user->user_id;
+			$paper_info->created_at = $user->start_exam;
+
+			/* 创建试卷ID，把试卷题目存入数据库 2017/3/13 */
+			if ($paper_info->save()) {
+				//把题库存入历史试卷
+				$insertArr = array();
+				$questions = DB::table('question')->where('question_is_quest_bank', 1)->get();
+				foreach ($questions as $key => $question) {
+					$insertArr[$key]['question_answer'] = $question->question_answer;
+					$insertArr[$key]['question_id'] = $question->question_id;
+					$insertArr[$key]['question_title'] = $question->question_title;
+					$insertArr[$key]['question_score'] = $question->question_score;
+					$insertArr[$key]['question_order'] = $question->question_order;
+					$insertArr[$key]['paper_id'] = $paper_info->paper_id;
+				}
+				//记录paper_id
+				session(['paper_id' => $paper_info->paper_id]);
+				$user->paper_id = $paper_info->paper_id;
+				$user->update();
+				$res = DB::table('paper_questions')->insert($insertArr);
+				if ($res) {
+					DB::commit();
+				} else {
+					DB::rollback();
+					return redirect('index')->with('error', '数据库更新出错(存入具体题目时),请重新考试!');
+				}
+
+			} else {//创建考试试卷出错
+
+				DB::rollback();
+				return redirect('index')->with('error', '数据库更新出错（保存paper_id时）,请重新考试!');
+			}
+			/* 创建试卷ID，把试卷题目存入数据库 2017/3/13 end*/
+
+
+		}
+
+		/* 青岛火一五信息科技有限公司huo15.com 判断是否存在没有答完的试卷，并获取题目列表 日期：2017/3/13 end */
+
+
+		/* 获取quest_id，题目ID号 2017/3/13 */
+		//初始化 题目信息
+		/** @var Question $oneQuestion */
+		$oneQuestion = null;
 		if ($quest_id) {
 			//题目ID存在时（选择固定题目答题）
 			$quest_id = intval($quest_id);
 			//把这道题显示出来
-			$oneQuestion = Question::find($quest_id);
-			//这道题的答案
-			$quest = PaperQuestion::whereRaw('question_id=? and paper_id=?', [$quest_id, $this->getSessionPaperId()])->first();
-			if (!$quest) {
+			$oneQuestion = PaperQuestion::whereRaw('question_id=? and paper_id=?', [$quest_id, $user->paper_id])->first();
+			if (!$oneQuestion) {
+				$user->start_exam = 0;
+				$user->paper_id = 0;
+				$user->update();
+				session(['user' => $user]);
 				return redirect('index')->with('error', '题库已经更改,请重新考试!');
-			}
-			$quest_answer = $quest->quest_answer;
-			//答题过程
-			$quest_process = $quest->quest_process;
-			//题目总数
-			$totalQuestions = Question::where('question_is_quest_bank', 1)->count();
-			//剩余题目
-			$leftQuestions = PaperQuestion::whereRaw('quest_answer=? and paper_id=?', ['', session('paper_id')])
-				->count();
-
-
-			//前一道题ID
-			$preOrder = PaperQuestion::whereRaw('question_order<? and paper_id=?', [$oneQuestion->question_order, session('paper_id')])
-				->max('question_order');
-			if ($preOrder != null) {
-				$preQuest = Question::where('question_order', $preOrder)->first();
-				$preId = $preQuest->question_id;
-			} else {
-				$preId = null;
-			}
-
-
-			//下一道题ID
-			$nextOrder = PaperQuestion::whereRaw('question_order>? and paper_id=?', [$oneQuestion->question_order, session('paper_id')])
-				->min('question_order');
-
-			if ($nextOrder != null) {
-				$nextQuest = Question::where('question_order', $nextOrder)->first();
-				$nextId = $nextQuest->question_id;
-			} else {
-				$nextId = null;
 			}
 
 		} else {
-
-			//开始答题
-			// 答题的第一种情况 还没有答完题目继续答题
-			if ($user->start_exam) {
-				if ($this->getSessionPaperId()) {
-					//存在没有答完的试卷
-					//把没有做的第一道考题显示出来
-					$goQuestion = PaperQuestion::whereRaw('quest_answer=? and paper_id=?', ['', $this->getSessionPaperId()])
-						->orderBy('question_order', 'ASC')
-						->first();
-					if ($goQuestion) {
-						$oneQuestion = Question::find($goQuestion->question_id);
-					} else {
-						$goQuestion = PaperQuestion::whereRaw('paper_id=?', [$this->getSessionPaperId()])
-							->orderBy('question_order', 'ASC')
-							->first();
-						if ($goQuestion) {
-							$oneQuestion = Question::find($goQuestion->question_id);
-
-						} else {
-							return redirect('handin');
-						}
-
-					}
-					//这道题的答案
-					$quest_answer = $goQuestion->quest_answer;
-					//这道题的答题过程
-					$quest_process = $goQuestion->quest_process;
-					//题目总数
-					$totalQuestions = Question::where('question_is_quest_bank', 1)->count();
-					//剩余题目
-					$leftQuestions = PaperQuestion::whereRaw('quest_answer=? and paper_id=?', ['', session('paper_id')])
-						->count();
-
-
-					//前一道题ID
-					$preOrder = PaperQuestion::whereRaw('question_order<? and paper_id=?', [$oneQuestion->question_order, session('paper_id')])
-						->max('question_order');
-					if ($preOrder != null) {
-						$preQuest = Question::where('question_order', $preOrder)->first();
-						$preId = $preQuest->question_id;
-					} else {
-						$preId = null;
-					}
-
-
-					//下一道题ID
-					$nextOrder = PaperQuestion::whereRaw('question_order>? and paper_id=?', [$oneQuestion->question_order, session('paper_id')])
-						->min('question_order');
-					if ($nextOrder != null) {
-						$nextQuest = Question::where('question_order', $nextOrder)->first();
-
-						$nextId = $nextQuest->question_id;
-					} else {
-						$nextId = null;
-					}
-
-				} else {
-					//不存在答完的试卷。
-					//dd("o:".$user->start_exam);
-					$user->start_exam = 0;
-					$res = $this->exam($user);
-					$oneQuestion = $res["oneQuestion"];
-
-					//这道题的答案
-					$quest_answer = $res["quest_answer"];
-					//这道题的答题过程
-					$quest_process = $res["quest_process"];
-					//题目总数
-					$totalQuestions = $res["totalQuestions"];
-					//剩余题目
-					$leftQuestions = $res["leftQuestions"];
-					$preId = $res["preId"];
-					$nextId = $res["nextId"];
-
-				}
-			} else {// 答题的第二种情况 开始全新答题
-				//记录开始考试时间
-				$time = time();
-				$user->start_exam = $time;
-				session(['user' => $user]);
-				DB::beginTransaction();
-				$paper_info = new PaperInfo();
-				$paper_info->user_id = $user->user_id;
-				$paper_info->created_at = $user->start_exam;
-				/* 题目存入数据库 */
-				if ($paper_info->save()) {
-					//把题库存入历史试卷
-					$questions = DB::table('question')->where('question_is_quest_bank', 1)->get();
-					foreach ($questions as $key => $question) {
-						$insertArr[$key]['question_answer'] = $question->question_answer;
-						$insertArr[$key]['question_id'] = $question->question_id;
-						$insertArr[$key]['question_title'] = $question->question_title;
-						$insertArr[$key]['question_score'] = $question->question_score;
-						$insertArr[$key]['question_order'] = $question->question_order;
-						$insertArr[$key]['paper_id'] = $paper_info->paper_id;
-					}
-					//记录paper_id
-					session(['paper_id' => $paper_info->paper_id]);
-					$res3 = DB::table('paper_questions')->insert($insertArr);
-					if ($res3) {
-						DB::commit();
-						//回到主作用域返回第一道没有做的题目
-					} else {
-						DB::rollback();
-						return redirect('index')->with('error', '数据库更新出错,请重新考试!');
-					}
-				} else {
-					DB::rollback();
-					return redirect('index')->with('error', '数据库更新出错,请重新考试!');
-				}
-				/* 题目存入数据库 end */
-
-				//把没有做的第一道考题显示出来
-				$goQuestion = PaperQuestion::whereRaw('quest_answer=? and paper_id=?', ['', $this->getSessionPaperId()])
+			//把没有做的第一道考题显示出来
+			$goQuestion = PaperQuestion::whereRaw('quest_answer=? and paper_id=?', ['', $user->paper_id])
+				->orderBy('question_order', 'ASC')
+				->first();
+			if ($goQuestion) {//存在没有做完的题目
+				$oneQuestion = Question::find($goQuestion->question_id);
+			} else {//题已经做完，只是没有交卷
+				$goQuestion = PaperQuestion::whereRaw('paper_id=?', [$user->paper_id])
 					->orderBy('question_order', 'ASC')
 					->first();
-				if ($goQuestion) {
-					$oneQuestion = Question::find($goQuestion->question_id);
-				} else {
-					$goQuestion = PaperQuestion::whereRaw('paper_id=?', [$this->getSessionPaperId()])
-						->orderBy('question_order', 'ASC')
-						->first();
-					$oneQuestion = Question::find($goQuestion->question_id);
-				}
-				//这道题的答案
-				$quest_answer = $goQuestion->quest_answer;
-				//这道题的答题过程
-				$quest_process = $goQuestion->quest_process;
-				//题目总数
-				$totalQuestions = Question::where('question_is_quest_bank', 1)->count();
-				//剩余题目
-				$leftQuestions = PaperQuestion::whereRaw('quest_answer=? and paper_id=?', ['', session('paper_id')])
-					->count();
-
-
-				//前一道题ID
-				$preOrder = PaperQuestion::whereRaw('question_order<? and paper_id=?', [$oneQuestion->question_order, session('paper_id')])
-					->max('question_order');
-				if ($preOrder != null) {
-					$preQuest = Question::where('question_order', $preOrder)->first();
-					$preId = $preQuest->question_id;
-				} else {
-					$preId = null;
-				}
-
-
-				//下一道题ID
-				$nextOrder = PaperQuestion::whereRaw('question_order>? and paper_id=?', [$oneQuestion->question_order, session('paper_id')])
-					->min('question_order');
-
-				if ($nextOrder != null) {
-					$nextQuest = Question::where('question_order', $nextOrder)->first();
-					$nextId = $nextQuest->question_id;
-				} else {
-					$nextId = null;
-				}
-
-
+				$oneQuestion = Question::find($goQuestion->question_id);
 			}
-
-			//session()->forget('user');
-
 		}
+
+		/* 获取quest_id，题目ID号 2017/3/13 end*/
+
+
+		//答题过程
+		$quest_process = $oneQuestion->quest_process;
+
+
+		//前一道题ID
+		$preOrder = PaperQuestion::whereRaw('question_order<? and paper_id=?', [$oneQuestion->question_order, $user->paper_id])
+			->max('question_order');
+		$preId = null;//前一道题的ID。
+		if ($preOrder != null) {
+			$preQuest = Question::where('question_order', $preOrder)->first();
+			$preId = $preQuest->question_id;
+		} else {
+			$preId = null;
+		}
+
+
+		//下一道题ID
+		$nextId = null;
+		$nextOrder = PaperQuestion::whereRaw('question_order>? and paper_id=?', [$oneQuestion->question_order, $user->paper_id])
+			->min('question_order');
+
+		if ($nextOrder != null) {
+			$nextQuest = Question::where('question_order', $nextOrder)->first();
+			$nextId = $nextQuest->question_id;
+		} else {
+			$nextId = null;
+		}
+
+
+		/* 需要传递给前台的变量 2017/3/13 */
+		//这道题的答案
+		$quest_answer = $oneQuestion->quest_answer;
+		//题目总数
+		$totalQuestions = Question::where('question_is_quest_bank', 1)->count();
+		//剩余题目
+		$leftQuestions = PaperQuestion::whereRaw('quest_answer=? and paper_id=?', ['', session('paper_id')])
+			->count();
 		$pageTitle = '考试中...';
+		/* 需要传递给前台的变量 2017/3/13 end*/
+
+
+
 		return view('home.startExam', compact(
 				'pageTitle',
 				'time',
@@ -480,7 +316,8 @@ class IndexController extends CommonController
 	public function questionList()
 	{
 
-		$datas = DB::table('paper_questions')->where('paper_id', $this->getSessionPaperId())->orderBy('question_order', 'ASC')
+		$user = session("user");
+		$datas = DB::table('paper_questions')->where('paper_id', $user->paper_id)->orderBy('question_order', 'ASC')
 			->paginate(5);
 
 		$totalScore = DB::table('question')->sum('question_score');
@@ -494,36 +331,37 @@ class IndexController extends CommonController
 
 		$handInTime = time();
 		$user = session('user');
-		if ($user->start_exam > 0) {
+		if ($user->start_exam > 0) {//正在考试的时候，结束考试。
 
-			$user->start_exam = 0;
-			//用户表更新交卷状态
 
-			//更新session
-			session(['user' => $user]);
 			DB::beginTransaction();
-			$res2 = PaperInfo::where('paper_id', session('paper_id'))
+			$res2 = PaperInfo::where('paper_id', $user->paper_id)
 				->update([
 					'updated_at' => $handInTime
 				]);
-			if ($res2) {
+			if ($res2) {//更新交卷时间成功
 				DB::commit();
 				//考试得分
-				$sumScore = PaperQuestion::whereRaw('paper_id=? and quest_answer=question_answer', [$this->getSessionPaperId()])
+				$sumScore = PaperQuestion::whereRaw('paper_id=? and quest_answer=question_answer', [$user->paper_id])
 					->sum('question_score');
-				$paper = PaperInfo::find($this->getSessionPaperId());
+				$paper = PaperInfo::find($user->paper_id);
 				$paper->total_score = $sumScore;
 
 				if ($paper->save()) {
 					$s = intval(intval($paper->updated_at) - intval($paper->created_at));
-
 					$sumTime = gmstrftime('%H:%M:%S', $s);;
+				} else {
+					DB::rollback();
+					return redirect('index')->with('error', '交卷失败，失败原因可能是无法获取paper_id. 请重新考试');
 				}
 
-
-				session()->forget('paper_id');
-				session('paper_id', null);
 				//交卷成功
+				$user->start_exam = 0;
+				$user->paper_id = 0;
+				$user->update();
+				session(['user' => $user]);
+
+
 				return view('home.handIn', compact(
 					'sumTime',
 					'sumScore',

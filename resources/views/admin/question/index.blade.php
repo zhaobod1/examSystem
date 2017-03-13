@@ -58,6 +58,7 @@
 
         <div class="result_wrap">
             <div class="result_content">
+                <input type="hidden" name="getCategory" id="getCategory" value="{{ $category }}">
                 <table class="list_tab">
                     <tr>
                         <th class="tc" width="5%"><input type="checkbox" id="checkAll" name=""></th>
@@ -187,6 +188,12 @@
                 <div class="page_list">
                     {{ $datas->links() }}
                 </div>
+                <script>
+                    var getCategory = $("#getCategory").val();
+                    $(".pagination li a").each(function (index, element) {
+                      $(element).attr("href", $(element).attr("href") + "&category=" + getCategory);
+                    })
+                </script>
                 <style>
                     .result_content ul li span {
                         font-size: 15px;

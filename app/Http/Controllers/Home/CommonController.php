@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Home;
 
 use App\Http\Model\PaperInfo;
 use App\Http\Model\QuestConfig;
+use App\Http\Model\User;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -39,29 +40,7 @@ class CommonController extends Controller
 		return $examTime;
 	}
 
-	public function getSessionPaperId()
-	{
-		if (!session('paper_id')) {
-			$res = PaperInfo::whereRaw('user_id=? and updated_at=?', [session('user')->user_id, 0])
-				->select('paper_id')->first();
 
-			if ($res) {
-				session(['paper_id' => $res->paper_id]);
-				return $res->paper_id;
-			} else {
-				//如果没有等于0的更新试卷,选择最近的一个试卷
-				/*$res = PaperInfo::whereRaw('user_id=?', [session('user')->user_id])
-					->orderBy('updated_at', 'DESC')
-					->select('paper_id')->first();
-				return $res->paper_id;*/
-				session()->forget('paper_id');
-				return false;
-
-			}
-		} else {
-			return session('paper_id');
-		}
-	}
 
 	public function curlHttpGet($url)
 	{
