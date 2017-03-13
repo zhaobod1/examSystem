@@ -202,6 +202,12 @@ class IndexController extends CommonController
 		/* 处理提交的答案 */
 		$input = Input::except('_token');
 		if ($input) {
+			if(!isset($input["quest_answer"])) {
+				$question_id = isset($input['question_id'])? intval($input['question_id']) : "";
+
+				return redirect('startexam/' . $question_id)->with('errors', '提交答案不能为空！');
+
+			}
 			$input['quest_answer'] = preg_replace('#[^(0-9\.)|\s]+#', '', $input['quest_answer']);
 
 			$rules = [

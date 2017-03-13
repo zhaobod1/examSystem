@@ -1,6 +1,6 @@
 /vendor
 /node_modules
-.idea/
+/.idea/
 .gitignore
 /public/storage
 Homestead.yaml
@@ -9,3 +9,5 @@ Homestead.json
 package.json
 gulpfile.js
 *.sql
+/uploads/
+
