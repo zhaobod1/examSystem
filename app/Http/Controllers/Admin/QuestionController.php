@@ -87,7 +87,7 @@ class QuestionController extends CommonController
 	public function analysis()
 	{
 		//判断是否有人没有交卷
-		$usersHasExamTime = User::whereRaw("start_exam > ?" [0])
+		$usersHasExamTime = User::whereRaw("start_exam > ? ", [0])
 			->get();
 		if ($usersHasExamTime) {
 			$userNames = "";
