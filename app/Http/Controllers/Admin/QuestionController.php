@@ -86,6 +86,18 @@ class QuestionController extends CommonController
 
 	public function analysis()
 	{
+		//判断是否有人没有交卷
+		$usersHasExamTime = User::whereRaw("start_exam > ?" [0])
+			->get();
+		if ($usersHasExamTime) {
+			$userNames = "";
+			foreach ($usersHasExamTime as $user) {
+				$userNames .= $user->user_neckname . ", ";
+			}
+			$userNames = substr($userNames,0,-1);
+			echo "<script>alert('有学生没有交卷！请先敦促学生交卷再导出！ 没有交卷的同学是：' + " . $userNames . ")</script>";
+			return new \Response();
+		}
 		$questions = Question::where('question_is_quest_bank', 1)->orderBy('question_order', 'DESC')->get();
 
 

@@ -37,6 +37,9 @@
                 <ol class="breadcrumb">
                     <li>编号: {{ $question->question_order }}</li>
                     <li>分值: {{ $question->question_score }} 分</li>
+                    <li>
+                        <a href="javascript:history.back();" class="btn btn-xs btn-success">返回</a>
+                    </li>
                 </ol>
             </div>
         </div>
