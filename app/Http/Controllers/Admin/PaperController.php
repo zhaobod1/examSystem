@@ -24,6 +24,11 @@ class PaperController extends Controller
 		return view('admin.paper.index', compact('papers','sumPapers'));
 	}
 
+	/**
+	 * 题目列表
+	 * @param int $paper_id
+	 * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\View\View
+	 */
 	public function questionList($paper_id)
 	{
 

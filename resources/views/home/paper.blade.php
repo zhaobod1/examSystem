@@ -20,7 +20,7 @@
                     </tr>
                     </thead>
                     @foreach($questions as $question)
-                        <tr>
+                        <tr onclick="javascript:window.location.href='{{ url('getQuestion') }}' + '/' + '{{ $question->question_id }}'">
                             <td>{{ $question->question_order }}</td>
                             <td>{{ $question->question_title }}</td>
                             <td><span style="color:red">

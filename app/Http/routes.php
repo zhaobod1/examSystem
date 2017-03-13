@@ -112,6 +112,7 @@ Route::group(['middleware' => ['web', 'home.login'], 'namespace' => 'Home'], fun
 
     Route::any('recentPapers', 'IndexController@recentPapers');
     Route::get('paper/{paper_id}', 'IndexController@paper');
+    Route::get('getQuestion/{quest_id}', 'IndexController@getQuestion');
 
 
 

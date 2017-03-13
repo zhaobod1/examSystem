@@ -406,6 +406,20 @@ class IndexController extends CommonController
 		));
 	}
 
+	/**
+	 * 查看题目详细信息
+	 * @param int  $quest_id
+	 * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+	 */
+	public  function  getQuestion($quest_id) {
+		if ($quest_id) {
+			$quest_id = intval($quest_id);
+			$question = Question::where("question_id", $quest_id)
+				->first();
+
+		}
+		return view("home.getQuestion", compact("question"));
+	}
 	public function paper($paper_id)
 	{
 		if ($paper_id) {
