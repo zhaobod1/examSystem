@@ -6,7 +6,10 @@
     <link rel="stylesheet" href="{{ asset('resources/views/admin/style/font/css/font-awesome.min.css') }}">
     <script type="text/javascript" src="{{ asset('resources/views/admin/style/js/jquery.js') }}"></script>
     <script type="text/javascript" src="{{ asset('resources/views/admin/style/js/ch-ui.admin.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('resources/views/admin/style/js/bootstrapSwitch.js') }}"></script>
     <script type="text/javascript" src="{{asset('resources/org/layer/layer.js')}}"></script>
+    <link rel="stylesheet" href="{{ asset('resources/views/admin/style/css/bootstrapSwitch.css') }}">
+
 
 </head>
 <body>

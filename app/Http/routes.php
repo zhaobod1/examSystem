@@ -43,13 +43,17 @@ Route::group(['middleware' => ['web', 'admin.login'], 'prefix' => 'admin', 'name
     Route::get('index', 'IndexController@index');
     Route::get('/', 'IndexController@index');
     Route::get('info', 'IndexController@info');
+    Route::any('syssetting', 'IndexController@sysSetting');
     Route::get('quit', 'LoginController@quit');
     Route::any('password', 'IndexController@password');
 
+	//ajax
+	Route::any('question/ajax', 'QuestionController@ajax');
 
 	//question
     Route::any('question', 'QuestionController@index');
     Route::any('question/create', 'QuestionController@create');
+    Route::any('question/exportAnalysis', 'QuestionController@analysis');
     Route::any('question/{question_id}/edit', 'QuestionController@edit');
     Route::any('question/{question_id}/update', 'QuestionController@update');
     Route::any('question/store', 'QuestionController@store');
@@ -60,7 +64,7 @@ Route::group(['middleware' => ['web', 'admin.login'], 'prefix' => 'admin', 'name
 
     //users
 
-    Route::get('users', 'UserController@index');
+    Route::any('users', 'UserController@index');
     Route::get('users/create', 'UserController@create');
     Route::post('users/store', 'UserController@store');
     Route::get('users/{user_id}/edit', 'UserController@edit');

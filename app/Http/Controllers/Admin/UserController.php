@@ -16,9 +16,21 @@ class UserController extends CommonController
 {
     //
 
+	/**
+	 * 会员列表
+	 * @param Request $request
+	 * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+	 */
     public function index(Request $request)
     {
-        $category = $request->get('category');
+
+    	//输入请求。
+	    $input = Input::except('_token');
+	    if (isset($input["category"])) {
+
+	    }
+
+        $category = $request->get('category');//审核类别，0 未审核，1已经审核
         if (isset($category)) {
 
             switch ($category) {

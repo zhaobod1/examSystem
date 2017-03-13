@@ -71,11 +71,12 @@
                 <form class="" id="submitForm" action="">
                     {{ csrf_field() }}
                     <div class="form-group">
+                        <input type="hidden" value="{{ $examTime }}" id="examTime">
                         <textarea name="quest_process" id="quest_process" cols="30" rows="5" class="form-control" placeholder="请输入答题过程">{{ $quest_process }}</textarea>
                     </div>
                     <div class="form-group">
                         <input type="hidden" name="question_id" value="{{ $oneQuestion->question_id }}">
-                        <input id="inputTxt"  name="quest_answer"  style="width: 100%;" value="{{ $quest_answer }}"  class="form-control" type="text" placeholder="请输入最终答案，只能输入数字">
+                        <input id="inputTxt"  name="quest_answer"  style="width: 100%;" value="{{ $quest_answer }}"  class="form-control" type="number" placeholder="请输入最终答案，只能输入数字">
                     </div>
                 </form>
 
@@ -89,7 +90,7 @@
                 </btn-group>
             </div>
             <div class="col-xs-10 col-md-10">
-                <div class="btn-group btn-group-lg" style="float: right;">
+                <div class="btn-group" style="float: right;">
                     <a  href="{{ $preId ? url('startexam') . '/' . $preId : 'javacript:void(0);' }}" class="btn
                     btn-default">{{ $preId ? '上一题' : '无上题' }}</a>
                     <a id="submitBtn" class="btn btn-primary">提交</a>
@@ -132,6 +133,9 @@
     <style>
         .hand-in-wrapper {
             display: none;
+        }
+        .amplifyImg {
+            margin-bottom: 250px;
         }
     </style>
     <!--答题页面js-->
@@ -193,10 +197,11 @@
 
 
             /* 倒计时 */
+            var examTime = parseInt($("#examTime").val());
             var start_time = {{ $time }}*1000;
             $('#timeKeeper').text('60:00');
 
-            var totalTime = 60*60*1000;
+            var totalTime = examTime*60*1000;
             var nowTimestamp = new Date().getTime();
 
 
@@ -213,7 +218,6 @@
                 leftTime = leftTime - 1000;
                 if (leftTime <=0) {
                     window.location.href = '{{ url("handin") }}';
-                    console.log(leftTime)
                 }
             }
 

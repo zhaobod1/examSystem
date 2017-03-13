@@ -22,6 +22,11 @@ class IndexController extends CommonController
 	//
 	public function index()
 	{
+		if ($this->checkNicknameAndPhone()) {
+			return redirect("usercenter")->with('errors', "请先填写姓名和手机号码再开始答题");
+
+		}
+
 		$isChecked = false;
 		if (!$this->userCheck()) {
 			$userCheck = '管理员审核通过才可以答题! 右上角菜单按钮联系管理员。';
@@ -50,15 +55,18 @@ class IndexController extends CommonController
 			$currPhone = $session_user->user_phone;
 			$oneUser = User::where('user_name', $input['user_phone'])->first();
 			if ($oneUser && $input['user_phone']!=$currPhone) {
-				return redirect('index')->with('errors', '手机号码已经存在!');
+				return redirect('index')->with('errors', '手机号码已经存在!请换一个手机号码');
 			}
 			$oneUser = User::where('user_phone', $input['user_phone'])->first();
 			if ($oneUser && $input['user_phone']!=$currPhone) {
-				return redirect('index')->with('errors', '手机号码已经存在!');
+				return redirect('index')->with('errors', '手机号码已经存在!请用微信方式登录');
 			}
 			$res = User::where('user_id', session('user')->user_id)
 				->update($input);
+
 			if ($res) {
+				$session_user->user_neckname = $input['user_neckname'];
+				$session_user->user_phone = $input['user_phone'];
 				return redirect('index')->with('errors', '个人信息更新成功!');
 			} else {
 				return redirect()->back()->with('errors', '个人信息更新失败! 可能原因：您的信息未做任何修改');
@@ -168,6 +176,34 @@ class IndexController extends CommonController
 
 	public function startExam($quest_id = null)
 	{
+		/* 青岛火一五信息科技有限公司huo15.com 检查是否填写个人信息，如果没有填写，转到个人中心。 日期：2017/3/13 */
+		if ($this->checkNicknameAndPhone()) {
+			return redirect("usercenter")->with('errors', "请先填写姓名和手机号码再开始答题");
+
+		}
+		/* 青岛火一五信息科技有限公司huo15.com 检查是否填写个人信息，如果没有填写，转到个人中心。 日期：2017/3/13 end */
+
+
+		/* 青岛火一五信息科技有限公司huo15.com 检测是否关闭了答题功能 日期：2017/3/13 */
+		$isclosed = $this->checkSystemStatus();
+		if ($isclosed == 0) {
+			$user = session('user');
+			$time = $user->start_exam;
+			if ($time) {
+				return redirect("handin");
+			}
+			return redirect('/')->with('errors',"现在不是答题时间，请在考试时间内进行答题！");
+		}
+		/* 青岛火一五信息科技有限公司huo15.com 检测是否关闭了答题功能 日期：2017/3/13 end */
+
+
+		/* 青岛火一五信息科技有限公司huo15.com 初始化 日期：2017/3/13 */
+		//系统设定的考试时间
+		$examTime = $this->getExamTime();
+		/* 青岛火一五信息科技有限公司huo15.com 初始化 日期：2017/3/13 end */
+
+
+
 
 		//检测审核
 		if (!$this->userCheck()) {
@@ -177,6 +213,12 @@ class IndexController extends CommonController
 		/* 处理提交的答案 */
 		$input = Input::except('_token');
 		if ($input) {
+			if(!isset($input["quest_answer"])) {
+				$question_id = isset($input['question_id'])? intval($input['question_id']) : "";
+
+				return redirect('startexam/' . $question_id)->with('errors', '提交答案不能为空！');
+
+			}
 			$input['quest_answer'] = preg_replace('#[^(0-9\.)|\s]+#', '', $input['quest_answer']);
 
 			$rules = [
@@ -269,7 +311,12 @@ class IndexController extends CommonController
 						$goQuestion = PaperQuestion::whereRaw('paper_id=?', [$this->getSessionPaperId()])
 							->orderBy('question_order', 'ASC')
 							->first();
-						$oneQuestion = Question::find($goQuestion->question_id);
+						if ($goQuestion) {
+							$oneQuestion = Question::find($goQuestion->question_id);
+
+						} else {
+							return redirect('handin');
+						}
 
 					}
 					//这道题的答案
@@ -306,7 +353,8 @@ class IndexController extends CommonController
 					}
 
 				} else {
-					dd("o:".$user->start_exam);
+					//不存在答完的试卷。
+					//dd("o:".$user->start_exam);
 					$user->start_exam = 0;
 					$res = $this->exam($user);
 					$oneQuestion = $res["oneQuestion"];
@@ -421,7 +469,8 @@ class IndexController extends CommonController
 				'quest_answer',
 				'quest_process',
 				'totalQuestions',
-				'leftQuestions'
+				'leftQuestions',
+				'examTime'
 			)
 		);
 
@@ -499,6 +548,7 @@ class IndexController extends CommonController
 
 		$user = session('user');
 		$papers = PaperInfo::where('user_id', $user->user_id)
+			->orderBy("updated_at", "DESC")
 			->paginate(5);
 		$pageTitle = '历史试卷';
 		return view('home.recentPapers', compact(

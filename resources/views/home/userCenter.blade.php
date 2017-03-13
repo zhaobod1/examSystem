@@ -33,13 +33,13 @@
                                 $user->user_name }}">
                             </div>
                             <div class="form-group">
-                                <label class="">昵称</label>
-                                <input type="text" name="user_neckname" class="form-control" placeholder="起个昵称吧" value="{{
+                                <label class="">学生姓名</label>
+                                <input type="text" name="user_neckname" class="form-control" placeholder="填写正确的姓名" value="{{
                                 $user->user_neckname }}">
                             </div>
                             <div class="form-group">
                                 <label class="">手机号码</label>
-                                <input type="text" name="user_phone" class="form-control" placeholder=""
+                                <input type="text" name="user_phone" class="form-control" placeholder="请输入正确的手机号码"
                                        value="{{ $user->user_phone }}">
                             </div>
                             <div class="form-group">

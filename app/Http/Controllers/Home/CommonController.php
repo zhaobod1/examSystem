@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Home;
 
 use App\Http\Model\PaperInfo;
+use App\Http\Model\QuestConfig;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -10,6 +11,14 @@ use App\Http\Controllers\Controller;
 
 class CommonController extends Controller
 {
+	public function checkNicknameAndPhone()
+	{
+		$user = session('user');
+		if ($user->user_neckname=="" || strlen($user->user_phone)< 11) {
+			return true;
+		}
+		return false;
+	}
 
 	public function userCheck()
 	{
@@ -17,6 +26,17 @@ class CommonController extends Controller
 		$sessionUser = session('user');
 		return $sessionUser->user_check;
 		/*判断审核 end*/
+	}
+
+	public function checkSystemStatus()
+	{
+		$isClosed = QuestConfig::where("conf_name", "isCloseSystem")->value('field_value');
+		return $isClosed;
+	}
+	public function getExamTime()
+	{
+		$examTime = QuestConfig::where("conf_name", "examTime")->value('field_value');
+		return $examTime;
 	}
 
 	public function getSessionPaperId()
