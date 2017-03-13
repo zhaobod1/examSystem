@@ -64,7 +64,7 @@ Route::group(['middleware' => ['web', 'admin.login'], 'prefix' => 'admin', 'name
 
     //users
 
-    Route::get('users', 'UserController@index');
+    Route::any('users', 'UserController@index');
     Route::get('users/create', 'UserController@create');
     Route::post('users/store', 'UserController@store');
     Route::get('users/{user_id}/edit', 'UserController@edit');

@@ -11,12 +11,13 @@
     @include("common.msgOrError")
     <!--结果页快捷搜索框 开始-->
     <div class="search_wrap">
-        <form action="" method="post">
+        <form action="?" method="post">
+            {{ csrf_field() }}
             <table class="search_tab">
                 <tr>
                     <th width="120">选择分类:</th>
                     <td>
-                        <select onchange="javascript:location.href=this.value;">
+                        <select name="category" onchange="javascript:location.href=this.value;">
                             <option {{ $category == 2 ?  'selected = "selected"' : '' }} value="{{ url
                             ('admin/users') }}">全部会员</option>
                             <option {{ $category == 1 ?  'selected = "selected"' : '' }} value="{{ url
@@ -25,9 +26,9 @@
                             ('admin/users') }}?category=0">未审核会员</option>
                         </select>
                     </td>
-                    {{--<th width="70">关键字:</th>
-                    <td><input type="text" name="keywords" placeholder="关键字"></td>
-                    <td><input type="submit" name="sub" value="查询"></td>--}}
+                    <th width="70">关键字:</th>
+                    <td><input type="text" name="keywords" placeholder="输入学生姓名的关键字"></td>
+                    <td><input type="submit" name="sub" value="查询"></td>
                 </tr>
             </table>
         </form>

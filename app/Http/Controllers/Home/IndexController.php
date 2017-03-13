@@ -176,12 +176,15 @@ class IndexController extends CommonController
 
 	public function startExam($quest_id = null)
 	{
+		/* 青岛火一五信息科技有限公司huo15.com 检查是否填写个人信息，如果没有填写，转到个人中心。 日期：2017/3/13 */
 		if ($this->checkNicknameAndPhone()) {
 			return redirect("usercenter")->with('errors', "请先填写姓名和手机号码再开始答题");
 
 		}
+		/* 青岛火一五信息科技有限公司huo15.com 检查是否填写个人信息，如果没有填写，转到个人中心。 日期：2017/3/13 end */
 
-		//检测是否关闭了答题功能
+
+		/* 青岛火一五信息科技有限公司huo15.com 检测是否关闭了答题功能 日期：2017/3/13 */
 		$isclosed = $this->checkSystemStatus();
 		if ($isclosed == 0) {
 			$user = session('user');
@@ -191,8 +194,16 @@ class IndexController extends CommonController
 			}
 			return redirect('/')->with('errors',"现在不是答题时间，请在考试时间内进行答题！");
 		}
-		//考试时间
+		/* 青岛火一五信息科技有限公司huo15.com 检测是否关闭了答题功能 日期：2017/3/13 end */
+
+
+		/* 青岛火一五信息科技有限公司huo15.com 初始化 日期：2017/3/13 */
+		//系统设定的考试时间
 		$examTime = $this->getExamTime();
+		/* 青岛火一五信息科技有限公司huo15.com 初始化 日期：2017/3/13 end */
+
+
+
 
 		//检测审核
 		if (!$this->userCheck()) {
