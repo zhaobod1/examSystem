@@ -42,8 +42,9 @@
                         <li class="list-group-item" onclick="javascript:window.location.href='{{ url('startexam') }}'
                                 + '/' + '{{ $data->question_id }}'">
                             <a href="{{ url('startexam') . '/' . $data->question_id }}">
+                                {{ $data->question_order }}.
                                 <span style="{{ $data->quest_answer ? 'color:#cbdee4' : '' }}">
-                                    {{ $data->question_order }}. {{ $data->question_title }}
+                                     标题：{{ strlen($data->question_title)>15 ? substr($data->question_title,0,15) . "..." :  $data->question_title}}
                                 </span>
                             </a>
                             &nbsp;&nbsp;&nbsp;&nbsp;分值:<span style="color:red">{{ $data->question_score }}</span>

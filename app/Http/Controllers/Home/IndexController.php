@@ -227,7 +227,8 @@ class IndexController extends CommonController
 			//题目ID存在时（选择固定题目答题）
 			$quest_id = intval($quest_id);
 			//把这道题显示出来
-			$oneQuestion = PaperQuestion::whereRaw('question_id=? and paper_id=?', [$quest_id, $user->paper_id])->first();
+			//$oneQuestion = PaperQuestion::whereRaw('question_id=? and paper_id=?', [$quest_id, $user->paper_id])->first();
+			$oneQuestion = Question::whereRaw('question_id=?', [$quest_id])->first();
 			if (!$oneQuestion) {
 				$user->start_exam = 0;
 				$user->paper_id = 0;
@@ -249,13 +250,13 @@ class IndexController extends CommonController
 					->first();
 				$oneQuestion = Question::find($goQuestion->question_id);
 			}
+			$quest_id = $oneQuestion->question_id;
 		}
 
 		/* 获取quest_id，题目ID号 2017/3/13 end*/
 
 
-		//答题过程
-		$quest_process = $oneQuestion->quest_process;
+
 
 
 		//前一道题ID
@@ -263,8 +264,10 @@ class IndexController extends CommonController
 			->max('question_order');
 		$preId = null;//前一道题的ID。
 		if ($preOrder != null) {
-			$preQuest = Question::where('question_order', $preOrder)->first();
-			$preId = $preQuest->question_id;
+			$thisPaperQuestion = PaperQuestion::whereRaw("question_order=? and paper_id=?",[$preOrder, $user->paper_id])
+				->first();
+
+			$preId = $thisPaperQuestion->question_id;
 		} else {
 			$preId = null;
 		}
@@ -272,12 +275,16 @@ class IndexController extends CommonController
 
 		//下一道题ID
 		$nextId = null;
+
 		$nextOrder = PaperQuestion::whereRaw('question_order>? and paper_id=?', [$oneQuestion->question_order, $user->paper_id])
 			->min('question_order');
 
 		if ($nextOrder != null) {
-			$nextQuest = Question::where('question_order', $nextOrder)->first();
-			$nextId = $nextQuest->question_id;
+			$thisPaperQuestion = PaperQuestion::whereRaw("question_order=? and paper_id=?",[$nextOrder, $user->paper_id])
+				->first();
+
+			$nextId = $thisPaperQuestion->question_id;
+
 		} else {
 			$nextId = null;
 		}
@@ -285,7 +292,11 @@ class IndexController extends CommonController
 
 		/* 需要传递给前台的变量 2017/3/13 */
 		//这道题的答案
-		$quest_answer = $oneQuestion->quest_answer;
+		$thisPaperQuestion = PaperQuestion::whereRaw('question_id=? and paper_id=?', [$quest_id, $user->paper_id])
+			->first();
+		$quest_answer = $thisPaperQuestion->quest_answer;
+		//答题过程
+		$quest_process =$thisPaperQuestion->quest_process;
 		//题目总数
 		$totalQuestions = Question::where('question_is_quest_bank', 1)->count();
 		//剩余题目
@@ -320,7 +331,7 @@ class IndexController extends CommonController
 		$datas = DB::table('paper_questions')->where('paper_id', $user->paper_id)->orderBy('question_order', 'ASC')
 			->paginate(5);
 
-		$totalScore = DB::table('question')->sum('question_score');
+		$totalScore = DB::table('paper_questions')->where('paper_id', $user->paper_id)->sum('question_score');
 		$pageTitle = '试卷预览';
 
 		return view('home.questionList', compact('pageTitle', 'datas', 'totalScore'));
