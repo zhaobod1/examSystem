@@ -51,6 +51,9 @@
                     <a href="javascript:void(0);">
                         题库总分: <span style="color: #f254b6;">{{ $sumScore }}</span>
                     </a>
+                    <a href="javascript:void(0);">
+                        警告: <span style="color: red;">在导出EXCEL表格之前，不要修改题库。切记！！ 确认导出后，再修改题库。</span>
+                    </a>
                 </div>
             </div>
             <!--快捷导航 结束-->

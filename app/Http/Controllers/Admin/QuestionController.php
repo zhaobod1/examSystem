@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Validator;
 
@@ -94,9 +95,10 @@ class QuestionController extends CommonController
 			foreach ($usersHasExamTime as $user) {
 				$userNames .= $user->user_neckname . ", ";
 			}
-			$userNames = substr($userNames,0,-1);
-			echo "<script>alert('有学生没有交卷！请先敦促学生交卷再导出！ 没有交卷的同学是：' + " . $userNames . ")</script>";
-			return new \Response();
+			$userNames = substr($userNames,0,strlen($userNames)-2);
+			dd("有学生没有交卷！请先敦促学生交卷再导出！ 没有交卷的同学是：" . $userNames);
+			//echo "<script>alert('有学生没有交卷！请先敦促学生交卷再导出！ 没有交卷的同学是：' + " . $userNames . ")</script>";
+			//return new Response("<script>alert('有学生没有交卷！请先敦促学生交卷再导出！ 没有交卷的同学是：' + " . $userNames . ")</script>");
 		}
 		$questions = Question::where('question_is_quest_bank', 1)->orderBy('question_order', 'DESC')->get();
 
