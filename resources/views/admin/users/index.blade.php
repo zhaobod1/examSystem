@@ -17,13 +17,16 @@
                 <tr>
                     <th width="120">选择分类:</th>
                     <td>
-                        <select name="category" onchange="javascript:location.href=this.value;">
+                        <select name="category">
                             <option {{ $category == 2 ?  'selected = "selected"' : '' }} value="{{ url
-                            ('admin/users') }}">全部会员</option>
+                            ('admin/users') }}">全部会员
+                            </option>
                             <option {{ $category == 1 ?  'selected = "selected"' : '' }} value="{{ url
-                            ('admin/users') }}?category=1">已审核会员</option>
+                            ('admin/users') }}?category=1">已审核会员
+                            </option>
                             <option {{ $category == 0 ?  'selected = "selected"' : '' }} value="{{ url
-                            ('admin/users') }}?category=0">未审核会员</option>
+                            ('admin/users') }}?category=0">未审核会员
+                            </option>
                         </select>
                     </td>
                     <th width="70">关键字:</th>
@@ -114,26 +117,28 @@
     <!--搜索结果页面 列表 结束-->
 
     <script>
-        function delQuest(user_id) {
-            layer.confirm('您确定要删除此会员吗？', {
-                btn: ['确定','取消'] //按钮
-            }, function(){
-                $.post("{{url('admin/users/')}}/"+user_id+"/delete",{'_method':'delete','_token':"{{csrf_token()
-                }}"},
-                        function
-                                (data) {
-                            if(data.status==0){
-                                location.href = location.href;
-                                layer.msg(data.msg, {icon: 6});
-                            }else{
-                                layer.msg(data.msg, {icon: 5});
-                            }
-                        });
-//            layer.msg('的确很重要', {icon: 1});
-            }, function(){
-
+      function delQuest(user_id) {
+        layer.confirm('您确定要删除此会员吗？', {
+          btn: ['确定', '取消'] //按钮
+        }, function () {
+          $.post("{{url('admin/users/')}}/" + user_id + "/delete", {
+              '_method': 'delete', '_token': "{{csrf_token()
+                }}"
+            },
+            function
+              (data) {
+              if (data.status == 0) {
+                location.href = location.href;
+                layer.msg(data.msg, {icon: 6});
+              } else {
+                layer.msg(data.msg, {icon: 5});
+              }
             });
-        }
+//            layer.msg('的确很重要', {icon: 1});
+        }, function () {
+
+        });
+      }
     </script>
 
 @endsection
