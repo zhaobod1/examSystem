@@ -406,6 +406,11 @@ class IndexController extends CommonController
 			}
 
 		} else {
+			//交卷成功
+			$user->start_exam = 0;
+			$user->paper_id = 0;
+			$user->update();
+			session(['user' => $user]);
 			$pageTitle = '考试结束';
 			return view('home.handIn', [
 				'handinFail' => true,
