@@ -6,7 +6,7 @@ use App\Http\Model\PaperInfo;
 use App\Http\Model\QuestConfig;
 use App\Http\Model\User;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\DB;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
@@ -93,5 +93,19 @@ class CommonController extends Controller
 			$result .= $str[$num[$i]];
 		}
 		return $result;
+	}
+	public function checkQuestLibCount()
+	{
+		$questLib = DB::table('question')->where('question_is_quest_bank', 1)
+			->count();
+
+		if ($questLib == 0) {
+			QuestConfig::find(1)->update([
+				"field_value" => 0
+			]);
+			return false;
+		} else {
+			return true;
+		}
 	}
 }

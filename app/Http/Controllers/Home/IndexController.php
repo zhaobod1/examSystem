@@ -7,7 +7,6 @@ use App\Http\Model\PaperQuestion;
 use App\Http\Model\Question;
 use App\Http\Model\User;
 use Illuminate\Http\Request;
-
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Crypt;
@@ -29,13 +28,16 @@ class IndexController extends CommonController
 
 		$isChecked = false;
 		if (!$this->userCheck()) {
-			$userCheck = '管理员审核通过才可以答题! 右上角菜单按钮联系管理员。';
+			$userCheck = '微信答题系统 版本1.1.4<br/>管理员审核通过才可以答题! 右上角菜单按钮联系管理员。';
 			$isChecked = false;
 		} else {
 			$userCheck = '微信答题系统 版本1.1.4';
 			$isChecked = true;
 
 		}
+
+
+
 		return view('home.index', compact('userCheck', 'isChecked'));
 	}
 
@@ -93,6 +95,8 @@ class IndexController extends CommonController
 	 */
 	public function startExam($quest_id = null)
 	{
+
+
 		/* 青岛火一五信息科技有限公司huo15.com 检查是否填写个人信息，如果没有填写，转到个人中心。 日期：2017/3/13 */
 		if ($this->checkNicknameAndPhone()) {
 			return redirect("usercenter")->with('errors', "请先填写姓名和手机号码再开始答题");
@@ -103,14 +107,17 @@ class IndexController extends CommonController
 
 
 		/* 青岛火一五信息科技有限公司huo15.com 检测是否关闭了答题功能 日期：2017/3/13 */
+
+
 		$isclosed = $this->checkSystemStatus();
 		if ($isclosed == 0) {
-			$user = session('user');
-			$time = $user->start_exam;
-			if ($time) {
-				return redirect("handin");
-			}
+
 			return redirect('/')->with('errors', "现在不是答题时间，请在考试时间内进行答题！");
+		}
+		//检测题库是否为0
+		if(!$this->checkQuestLibCount()) {
+			return redirect("/")->with('errors', "题库为空，请联系管理员修正。");
+
 		}
 		//检测审核
 		if (!$this->userCheck()) {
@@ -126,6 +133,7 @@ class IndexController extends CommonController
 		$user = session('user');
 		$time = $user->start_exam;//记录考试的开始时间，0代表没有考试。
 		/* 青岛火一五信息科技有限公司huo15.com 初始化 日期：2017/3/13 end */
+
 
 
 		/* 处理提交的答案 */
