@@ -16,7 +16,11 @@ use Illuminate\Support\Facades\Validator;
 
 class QuestionController extends CommonController
 {
-	//
+	/**
+	 * 后台管理系统的题目列表
+	 * @param Request $request
+	 * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+	 */
 	public function index(Request $request)
 	{
 
@@ -48,9 +52,6 @@ class QuestionController extends CommonController
 		$sumScore = Question::where('question_is_quest_bank', 1)->sum('question_score');
 		//题库数量
 		$sumQuestion = Question::where('question_is_quest_bank', 1)->count();
-
-
-		//dd($datas->links());
 		return view('admin.question.index', compact('datas', 'sumScore', 'sumQuestion', 'category'));
 	}
 

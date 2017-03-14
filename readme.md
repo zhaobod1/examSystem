@@ -20,3 +20,13 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT)
+
+## VERSION HISTORY
+* V1.1.3
+    
+    
+    1、新增历史试卷，题目预览功能。（做错的题，学生可以打开查看题目详情）
+    2、修复1970年，时间矫正。
+    3、修复统计报表统计不准问题。
+    4、新增会员搜索功能，输入姓名进行搜索。
+    

@@ -32,7 +32,7 @@ class IndexController extends CommonController
 			$userCheck = '管理员审核通过才可以答题! 右上角菜单按钮联系管理员。';
 			$isChecked = false;
 		} else {
-			$userCheck = '微信答题系统 版本1.1.3';
+			$userCheck = '微信答题系统 版本1.1.4';
 			$isChecked = true;
 
 		}
@@ -175,7 +175,6 @@ class IndexController extends CommonController
 			session(['user' => $user]);
 			$user->update();
 			/* 记录考试开始时间，存入数据库 2017/3/13 end*/
-
 			DB::beginTransaction();
 			$paper_info = new PaperInfo();
 			$paper_info->user_id = $user->user_id;
@@ -185,6 +184,13 @@ class IndexController extends CommonController
 			if ($paper_info->save()) {
 				//把题库存入历史试卷
 				$insertArr = array();
+				//判断题库数量
+				$questLib = DB::table('question')->where('question_is_quest_bank', 1)
+					->count();
+				if (!$questLib) {
+					return redirect('index')->with('error', '题库中没有题目没有开启！');
+
+				}
 				$questions = DB::table('question')->where('question_is_quest_bank', 1)->get();
 				foreach ($questions as $key => $question) {
 					$insertArr[$key]['question_answer'] = $question->question_answer;
@@ -248,7 +254,18 @@ class IndexController extends CommonController
 				$goQuestion = PaperQuestion::whereRaw('paper_id=?', [$user->paper_id])
 					->orderBy('question_order', 'ASC')
 					->first();
-				$oneQuestion = Question::find($goQuestion->question_id);
+				if (!$goQuestion) {//不存在试卷
+					//不知名的bug
+					//交卷成功
+					$user->start_exam = 0;
+					$user->paper_id = 0;
+					session(["user" => $user]);
+					$user->update();
+					return redirect('index')->with('error', '题库中没有题，请联系管理员检查题库');
+				} else {
+					$oneQuestion = Question::find($goQuestion->question_id);
+				}
+
 			}
 			$quest_id = $oneQuestion->question_id;
 		}

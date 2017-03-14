@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Model\QuestConfig;
 use App\Http\Model\User;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\DB;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Crypt;
@@ -72,6 +72,18 @@ class IndexController extends CommonController
 				$input['isCloseSystem'] = 0;
 			} else {
 				if ($input['isCloseSystem'] == 'true') {
+					$questLib = DB::table('question')->where('question_is_quest_bank', 1)
+						->count();
+					if (!$questLib) {
+						$input['isCloseSystem'] =0;
+						QuestConfig::find(1)->update([
+							"field_value" => $input['isCloseSystem']
+						]);
+						QuestConfig::find(2)->update([
+							"field_value" => $input['examTime']
+						]);
+						return back()->with('errors', '题库的入库数量是0，不能开启系统!');
+					}
 					$input['isCloseSystem'] =1;
 				}
 			}
