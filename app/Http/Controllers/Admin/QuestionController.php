@@ -7,7 +7,7 @@ use App\Http\Model\PaperQuestion;
 use App\Http\Model\Question;
 use App\Http\Model\User;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\DB;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Response;
@@ -48,11 +48,14 @@ class QuestionController extends CommonController
 				->paginate(10);
 		}
 
+		//在线答题的学生数量
+		$sumOlineStu = $questLib = DB::table('user')->whereRaw('paper_id>?', [0])
+			->count();
 		//分值计算
 		$sumScore = Question::where('question_is_quest_bank', 1)->sum('question_score');
 		//题库数量
 		$sumQuestion = Question::where('question_is_quest_bank', 1)->count();
-		return view('admin.question.index', compact('datas', 'sumScore', 'sumQuestion', 'category'));
+		return view('admin.question.index', compact('datas', 'sumScore', 'sumQuestion', 'category', 'sumOlineStu'));
 	}
 
 	public function ajax()

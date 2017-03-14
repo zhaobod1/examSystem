@@ -40,7 +40,7 @@
             <!--快捷导航 开始-->
             <div class="result_content">
                 <div class="short_wrap">
-                    <a id="exportReport" href="{{ url('admin/question/exportAnalysis') }}"><i class="fa fa-bar-chart"></i>导出报表</a>
+                    <a id="exportReport" href="{{ url('admin/question/exportAnalysis') }}"><i class="fa fa-bar-chart"></i>导出报表(并查看正在答题的学生)</a>
                     <a style="display: none;" id="waitBtn" href="javascript:;"><i class="fa fa-bar-chart"></i>正在导出...</a>
                     <a href="{{ url('admin/question/create') }}"><i class="fa fa-plus"></i>新增题目</a>
                     <a id="out_put" href="#"><i class="fa fa-recycle"></i>批量出库</a>
@@ -51,10 +51,14 @@
                     <a href="javascript:void(0);">
                         题库总分: <span style="color: #f254b6;">{{ $sumScore }}</span>
                     </a>
+                    <a  id="examStudentsList" href="#" class="btn btn-primary">
+                        正在答题的学生
+                        <span style="color: #f254b6;">{{ $sumOlineStu }}</span>
+                    </a>
                     <a href="javascript:void(0);">
                         警告: <span style="color: red;">在导出EXCEL表格之前，不要修改题库。切记！！ 确认导出后，再修改题库。</span>
                     </a>
-                    <a  id="examStudentsList" href="#" class="btn btn-primary">正在答题的学生列表</a>
+
                 </div>
             </div>
             <!--快捷导航 结束-->
