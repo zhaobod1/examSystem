@@ -122,7 +122,7 @@ class QuestionController extends CommonController
 				/*$paper = PaperInfo::where('user_id', $user->user_id)
 					->orderBy('paper_id', 'DESC')
 					->first();*/
-				$paper = PaperInfo::whereRaw('user_id = ? and total_score > ?', [$user->user_id,0])
+				$paper = PaperInfo::whereRaw('user_id = ? and total_score > ?', [$user->user_id, 0])
 					->orderBy('paper_id', 'DESC')
 					->first();
 
