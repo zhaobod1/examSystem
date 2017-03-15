@@ -87,7 +87,7 @@ class UserController extends CommonController
 
 
 		/* 青岛火一五信息科技有限公司huo15.com 下拉选择审核或者未审核筛选 日期：2017/3/13 */
-		if (!isset($input["keywords"])) {
+		if (!((isset($input["keywords"]) && strlen($input["keywords"]) >= 1)||(isset($input["userTel"]) && strlen($input["userTel"]) >= 1))) {
 
 			switch ($category) {
 				case "0":
