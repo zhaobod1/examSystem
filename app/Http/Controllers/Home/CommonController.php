@@ -25,6 +25,7 @@ class CommonController extends Controller
 	{
 		/*判断审核*/
 		$sessionUser = session('user');
+		$sessionUser = User::where("user_id", $sessionUser->user_id)->first();
 		return $sessionUser->user_check;
 		/*判断审核 end*/
 	}

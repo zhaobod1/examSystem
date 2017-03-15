@@ -28,7 +28,7 @@ class IndexController extends CommonController
 
 		$isChecked = false;
 		if (!$this->userCheck()) {
-			$userCheck = '微信答题系统 版本1.1.4<br/>管理员审核通过才可以答题! 右上角菜单按钮联系管理员。';
+			$userCheck = '微信答题系统 版本1.1.4 管理员审核通过才可以答题! 右上角菜单按钮联系管理员。';
 			$isChecked = false;
 		} else {
 			$userCheck = '微信答题系统 版本1.1.4';
@@ -38,12 +38,13 @@ class IndexController extends CommonController
 
 		/* 检测是否存在没有答完的试卷 2017/3/15 */
 		$user = session("user");
+		$user = User::where("user_id", $user->user_id)->first();
 		$bContinueExam = 0;// 0 没有还没有交卷的，1 存在没有答完的试卷，2 有已经结束但是没有交卷的试卷。
 		$sumTime = "00: 00: 00";
 		if ($user->paper_id > 0) {
-			$s = intval(intval(time()) - intval($user->start_exam));//考试用了多少时间
+			$s = intval(time()) - intval($user->start_exam);//考试用了多少时间
 			$sumTime = gmstrftime('%H:%M:%S', $s);
-			$sysExamTime = intval($this->getExamTime()) * 60 * 60 * 1000;
+			$sysExamTime = intval($this->getExamTime()) * 60;
 			if ($s - $sysExamTime < 0) {
 				$bContinueExam = 1;
 			} else {
@@ -54,7 +55,7 @@ class IndexController extends CommonController
 		/* 检测是否存在没有答完的试卷 2017/3/15 end*/
 
 
-		return view('home.index', compact('userCheck', 'isChecked','bContinueExam','sumTime'));
+		return view('home.index', compact('userCheck', 'isChecked', 'bContinueExam', 'sumTime'));
 	}
 
 	public function userCenter()
@@ -103,7 +104,6 @@ class IndexController extends CommonController
 	}
 
 
-
 	/**
 	 * 开始答题
 	 * @param null int $quest_id
@@ -131,7 +131,7 @@ class IndexController extends CommonController
 			return redirect('/')->with('errors', "现在不是答题时间，请在考试时间内进行答题！");
 		}
 		//检测题库是否为0
-		if(!$this->checkQuestLibCount()) {
+		if (!$this->checkQuestLibCount()) {
 			return redirect("/")->with('errors', "题库为空，请联系管理员修正。");
 
 		}
@@ -149,7 +149,6 @@ class IndexController extends CommonController
 		$user = session('user');
 		$time = $user->start_exam;//记录考试的开始时间，0代表没有考试。
 		/* 青岛火一五信息科技有限公司huo15.com 初始化 日期：2017/3/13 end */
-
 
 
 		/* 处理提交的答案 */
@@ -297,15 +296,12 @@ class IndexController extends CommonController
 		/* 获取quest_id，题目ID号 2017/3/13 end*/
 
 
-
-
-
 		//前一道题ID
 		$preOrder = PaperQuestion::whereRaw('question_order<? and paper_id=?', [$oneQuestion->question_order, $user->paper_id])
 			->max('question_order');
 		$preId = null;//前一道题的ID。
 		if ($preOrder != null) {
-			$thisPaperQuestion = PaperQuestion::whereRaw("question_order=? and paper_id=?",[$preOrder, $user->paper_id])
+			$thisPaperQuestion = PaperQuestion::whereRaw("question_order=? and paper_id=?", [$preOrder, $user->paper_id])
 				->first();
 
 			$preId = $thisPaperQuestion->question_id;
@@ -321,7 +317,7 @@ class IndexController extends CommonController
 			->min('question_order');
 
 		if ($nextOrder != null) {
-			$thisPaperQuestion = PaperQuestion::whereRaw("question_order=? and paper_id=?",[$nextOrder, $user->paper_id])
+			$thisPaperQuestion = PaperQuestion::whereRaw("question_order=? and paper_id=?", [$nextOrder, $user->paper_id])
 				->first();
 
 			$nextId = $thisPaperQuestion->question_id;
@@ -337,7 +333,7 @@ class IndexController extends CommonController
 			->first();
 		$quest_answer = $thisPaperQuestion->quest_answer;
 		//答题过程
-		$quest_process =$thisPaperQuestion->quest_process;
+		$quest_process = $thisPaperQuestion->quest_process;
 		//题目总数
 		$totalQuestions = Question::where('question_is_quest_bank', 1)->count();
 		//剩余题目
@@ -345,7 +341,6 @@ class IndexController extends CommonController
 			->count();
 		$pageTitle = '考试中...';
 		/* 需要传递给前台的变量 2017/3/13 end*/
-
 
 
 		return view('home.startExam', compact(
@@ -410,6 +405,9 @@ class IndexController extends CommonController
 				//交卷成功
 				$user->start_exam = 0;
 				$user->paper_id = 0;
+				$user = User::where("user_id", $user->user_id)->first();
+				$user->start_exam = 0;
+				$user->paper_id = 0;
 				$user->update();
 				session(['user' => $user]);
 
@@ -454,10 +452,11 @@ class IndexController extends CommonController
 
 	/**
 	 * 查看题目详细信息
-	 * @param int  $quest_id
+	 * @param int $quest_id
 	 * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
 	 */
-	public  function  getQuestion($quest_id) {
+	public function getQuestion($quest_id)
+	{
 		if ($quest_id) {
 			$quest_id = intval($quest_id);
 			$question = Question::where("question_id", $quest_id)
@@ -466,6 +465,7 @@ class IndexController extends CommonController
 		}
 		return view("home.getQuestion", compact("question"));
 	}
+
 	public function paper($paper_id)
 	{
 		if ($paper_id) {
