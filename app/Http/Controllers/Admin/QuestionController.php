@@ -49,7 +49,7 @@ class QuestionController extends CommonController
 		}
 
 		//在线答题的学生数量
-		$sumOlineStu = $questLib = DB::table('user')->whereRaw('paper_id>?', [0])
+		$sumOlineStu = $questLib = DB::table('user')->whereRaw('paper_id>? and user_check=?', [0, 1])
 			->count();
 		//分值计算
 		$sumScore = Question::where('question_is_quest_bank', 1)->sum('question_score');
@@ -92,14 +92,14 @@ class QuestionController extends CommonController
 	public function analysis()
 	{
 		//判断是否有人没有交卷
-		$usersHasExamTime = User::whereRaw("start_exam > ? ", [0])
+		$usersHasExamTime = User::whereRaw("start_exam > ? and user_check=?", [0, 1])
 			->get();
 		if ($usersHasExamTime) {
 			$userNames = "";
 			foreach ($usersHasExamTime as $user) {
 				$userNames .= $user->user_neckname . ", ";
 			}
-			$userNames = substr($userNames,0,strlen($userNames)-2);
+			$userNames = substr($userNames, 0, strlen($userNames) - 2);
 			dd("有学生没有交卷！请先敦促学生交卷再导出！ 没有交卷的同学是：" . $userNames);
 			//echo "<script>alert('有学生没有交卷！请先敦促学生交卷再导出！ 没有交卷的同学是：' + " . $userNames . ")</script>";
 			//return new Response("<script>alert('有学生没有交卷！请先敦促学生交卷再导出！ 没有交卷的同学是：' + " . $userNames . ")</script>");
@@ -119,7 +119,10 @@ class QuestionController extends CommonController
 			array_push($aTable[$k], $user->user_id . "-" . $user->user_neckname);
 			foreach ($questions as $key => $question) {
 
-				$paper = PaperInfo::where('user_id', $user->user_id)
+				/*$paper = PaperInfo::where('user_id', $user->user_id)
+					->orderBy('paper_id', 'DESC')
+					->first();*/
+				$paper = PaperInfo::whereRaw('user_id = ? and total_score > ?', [$user->user_id,0])
 					->orderBy('paper_id', 'DESC')
 					->first();
 
@@ -139,7 +142,6 @@ class QuestionController extends CommonController
 					}
 
 
-
 				} else {
 					array_push($aTable[$k], "从未");
 				}
@@ -151,30 +153,27 @@ class QuestionController extends CommonController
 		}
 
 
-
-
 		require_once 'resources/org/phpexcel/PHPExcel.php';
 		$objPHPExcel = new \PHPExcel(); //生成一个sheet
 		$objSheet = $objPHPExcel->getActiveSheet();//当前活动sheet
 		$paperName = "report" . date("YmdHis", time());
 		$objSheet->setTitle($paperName);
 
-		foreach($questions as $key => $question) {
+		foreach ($questions as $key => $question) {
 			//写行数据
-			$objSheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($key+1)."1", $question->question_order . "(" . $question->question_title . ")");
+			$objSheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($key + 1) . "1", $question->question_order . "(" . $question->question_title . ")");
 
 		}
 
 		foreach ($aTable as $k => $col) {
 			//写列数据
-			foreach ($col as $key => $value ) {
+			foreach ($col as $key => $value) {
 
-				$objSheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($key) . ($k+2), $value);
+				$objSheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($key) . ($k + 2), $value);
 
 
 			}
 		}
-
 
 
 		$objWriter = \PHPExcel_IOFactory::createWriter($objPHPExcel, "Excel5");//Excel5 2003，Excel2007
