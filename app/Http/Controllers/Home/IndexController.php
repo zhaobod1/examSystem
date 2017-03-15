@@ -43,7 +43,7 @@ class IndexController extends CommonController
 		if ($user->paper_id > 0) {
 			$s = intval(intval(time()) - intval($user->start_exam));//考试用了多少时间
 			$sumTime = gmstrftime('%H:%M:%S', $s);
-			$sysExamTime = intval($this->getExamTime()) * 60 * 60;
+			$sysExamTime = intval($this->getExamTime()) * 60 * 60 * 1000;
 			if ($s - $sysExamTime < 0) {
 				$bContinueExam = 1;
 			} else {
