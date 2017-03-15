@@ -36,9 +36,25 @@ class IndexController extends CommonController
 
 		}
 
+		/* 检测是否存在没有答完的试卷 2017/3/15 */
+		$user = session("user");
+		$bContinueExam = 0;// 0 没有还没有交卷的，1 存在没有答完的试卷，2 有已经结束但是没有交卷的试卷。
+		$sumTime = "00: 00: 00";
+		if ($user->paper_id > 0) {
+			$s = intval(intval(time()) - intval($user->start_exam));//考试用了多少时间
+			$sumTime = gmstrftime('%H:%M:%S', $s);
+			$sysExamTime = intval($this->getExamTime()) * 60 * 60;
+			if ($s - $sysExamTime < 0) {
+				$bContinueExam = 1;
+			} else {
+				$bContinueExam = 2;
+			}
+
+		}
+		/* 检测是否存在没有答完的试卷 2017/3/15 end*/
 
 
-		return view('home.index', compact('userCheck', 'isChecked'));
+		return view('home.index', compact('userCheck', 'isChecked','bContinueExam','sumTime'));
 	}
 
 	public function userCenter()
@@ -385,7 +401,7 @@ class IndexController extends CommonController
 
 				if ($paper->save()) {
 					$s = intval(intval($paper->updated_at) - intval($paper->created_at));
-					$sumTime = gmstrftime('%H:%M:%S', $s);;
+					$sumTime = gmstrftime('%H:%M:%S', $s);
 				} else {
 					DB::rollback();
 					return redirect('index')->with('error', '交卷失败，失败原因可能是无法获取paper_id. 请重新考试');

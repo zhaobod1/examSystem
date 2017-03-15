@@ -20,9 +20,26 @@
             </div>
             <p>{{ $userCheck }}</p>
             @if($isChecked)
-            <p>
-                <a href="/startexam" class="btn btn-primary">开始考试</a>
-            </p>
+                @if($bContinueExam == 1)
+                    <p>
+                        上次考试用时： <span style="color:red;">{{ $sumTime }}</span>
+                    </p>
+                    <p>
+                        <a href="/startexam" class="btn btn-primary">继续考试</a>
+                    </p>
+                @elseif($bContinueExam == 2)
+                    <p>
+                        上次考试已经结束，您还没有交卷。
+                    </p>
+                    <p>
+                        <a href="/handin" class="btn btn-primary">交卷</a>
+                    </p>
+                @else
+                    <p>
+                        <a href="/startexam" class="btn btn-primary">开始考试</a>
+                    </p>
+                @endif
+
             @endif
             <p>{{ date('Y 年 m 月 d 日', time()) }}</p>
         </div>
