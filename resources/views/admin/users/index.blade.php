@@ -18,19 +18,18 @@
                     <th width="120">选择分类:</th>
                     <td>
                         <select name="category">
-                            <option {{ $category == 2 ?  'selected = "selected"' : '' }} value="{{ url
-                            ('admin/users') }}">全部会员
+                            <option {{ $category == 2 ?  'selected = "selected"' : '' }} value="2">全部会员
                             </option>
-                            <option {{ $category == 1 ?  'selected = "selected"' : '' }} value="{{ url
-                            ('admin/users') }}?category=1">已审核会员
+                            <option {{ $category == 1 ?  'selected = "selected"' : '' }} value="1">已审核会员
                             </option>
-                            <option {{ $category == 0 ?  'selected = "selected"' : '' }} value="{{ url
-                            ('admin/users') }}?category=0">未审核会员
+                            <option {{ $category == 0 ?  'selected = "selected"' : '' }} value="0">未审核会员
                             </option>
                         </select>
                     </td>
-                    <th width="70">关键字:</th>
+                    <th width="70">姓名:</th>
                     <td><input type="text" name="keywords" placeholder="输入学生姓名的关键字"></td>
+                    <th width="70">手机号:</th>
+                    <td><input type="text" name="userTel" placeholder="输入学生手机号关键字"></td>
                     <td><input type="submit" name="sub" value="查询"></td>
                 </tr>
             </table>
@@ -101,10 +100,17 @@
                     @endforeach
                 </table>
 
+                <input type="hidden" name="getCategory" id="getCategory" value="{{ $category }}">
 
                 <div class="page_list">
                     {{ $datas->links() }}
                 </div>
+                <script>
+                  var getCategory = $("#getCategory").val();
+                  $(".pagination li a").each(function (index, element) {
+                    $(element).attr("href", $(element).attr("href") + "&category=" + getCategory);
+                  })
+                </script>
                 <style>
                     .result_content ul li span {
                         font-size: 15px;

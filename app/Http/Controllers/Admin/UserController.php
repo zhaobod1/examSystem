@@ -25,12 +25,13 @@ class UserController extends CommonController
 	{
 
 
+		/* 青岛火一五信息科技有限公司huo15.com 计数初始化 日期：2017/3/13 */
 		//输入请求。
+
 		$input = Input::except('_token');
 		$category = $request->get('category');//审核类别，0 未审核，1已经审核，2是全部
-		$datas = array();
 
-		/* 青岛火一五信息科技有限公司huo15.com 计数初始化 日期：2017/3/13 */
+		$datas = array();
 		//全部会员
 		$sumUser = User::where('user_id', '>', 1)->count();
 		//已审核会员
@@ -39,10 +40,9 @@ class UserController extends CommonController
 
 
 		/* 青岛火一五信息科技有限公司huo15.com 搜索键入关键字 日期：2017/3/13 */
-		if (isset($input["keywords"])) {
+		if (isset($input["keywords"]) && strlen($input["keywords"]) >= 1) {
 			$keyWord = htmlspecialchars($input["keywords"]);
-
-			$categoryId = substr($category, -1, 1);//审核类别，0 未审核，1已经审核 , s 是全部。
+			$categoryId = $input["category"];//审核类别，0 未审核，1已经审核 , 2 是全部。
 			switch ($categoryId) {
 				case "0":
 					$datas = User::whereRaw('user_id>? and user_check=? and user_neckname like ?', [1, 0, "%{$keyWord}%"])
@@ -61,16 +61,52 @@ class UserController extends CommonController
 			}
 
 		}
+		if (isset($input["userTel"]) && strlen($input["userTel"]) >= 1) {
+			$userTel = htmlspecialchars($input["userTel"]);
+
+			$categoryId = $input["category"];//审核类别，0 未审核，1已经审核 , 2 是全部。
+			switch ($categoryId) {
+				case "0":
+					$datas = User::whereRaw('user_id>? and user_check=? and user_phone like ?', [1, 0, "%{$userTel}%"])
+						->orderBy('updated_at', 'DESC')
+						->paginate(10);
+					break;
+				case "1":
+					$datas = User::whereRaw('user_id>? and user_check=? and user_phone like ?', [1, 1, "%{$userTel}%"])->orderBy('updated_at', 'DESC')
+						->paginate(10);
+					break;
+				default:
+					$datas = User::whereRaw('user_id>? and user_phone like ?', [1, "%{$userTel}%"])
+						->orderBy('updated_at', 'DESC')
+						->paginate(10);
+					break;
+			}
+
+		}
 		/* 青岛火一五信息科技有限公司huo15.com 搜索键入关键字 日期：2017/3/13 end */
 
 
 		/* 青岛火一五信息科技有限公司huo15.com 下拉选择审核或者未审核筛选 日期：2017/3/13 */
-		if ($category === null) {
+		if (!isset($input["keywords"])) {
 
-			$datas = User::whereRaw('user_id>?', [1])->orderBy('updated_at', 'DESC')->paginate(10);
-
+			switch ($category) {
+				case "0":
+					$datas = User::whereRaw('user_id>? and user_check=? and user_neckname like ?', [1, 0, "%%"])
+						->orderBy('updated_at', 'DESC')
+						->paginate(10);
+					break;
+				case "1":
+					$datas = User::whereRaw('user_id>? and user_check=? and user_neckname like ?', [1, 1, "%%"])->orderBy('updated_at', 'DESC')
+						->paginate(10);
+					break;
+				default:
+					$datas = User::whereRaw('user_id>? and user_neckname like ?', [1, "%%"])->orderBy('updated_at', 'DESC')
+						->paginate(10);
+					break;
+			}
 		}
-		$category = 2;
+
+
 		/* 青岛火一五信息科技有限公司huo15.com 下拉选择审核或者未审核筛选 日期：2017/3/13 end */
 
 

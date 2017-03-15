@@ -52,6 +52,8 @@ class IndexController extends CommonController
 			}
 
 		}
+
+
 		/* 检测是否存在没有答完的试卷 2017/3/15 end*/
 
 
