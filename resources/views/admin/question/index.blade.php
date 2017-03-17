@@ -207,6 +207,9 @@
                         font-size: 15px;
                         padding: 6px 12px;
                     }
+                    table.list_tab tr td input[type='text'] {
+                        width:50px;
+                    }
                 </style>
             </div>
         </div>
