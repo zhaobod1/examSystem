@@ -49,6 +49,24 @@
             <div class="col-xs-12 amplifyImg" id="hasImgDiv">
                 {!! $question->question_content !!}
             </div>
+            <div class="col-xs12">
+                <table class="table">
+                    <tr>
+                        <td>
+                            <span style="color:#177bb1">
+                                您的答案是：{{ $paperQuestion->quest_answer ? $paperQuestion->quest_answer : "您未答题" }}
+                            </span>
+                        </td>
+                        <td>
+                        <td>
+                            <span class="glyphicon glyphicon-{{ $paperQuestion->question_answer==$paperQuestion->quest_answer ? 'ok' : 'remove' }}"></span>
+                        </td>
+                        </td>
+                    </tr>
+
+                </table>
+
+            </div>
         </div>
         <!--题目内容区域 end-->
     </div>
@@ -64,6 +82,7 @@
         .hand-in-wrapper {
             display: none;
         }
+
         .amplifyImg {
             margin-bottom: 250px;
         }

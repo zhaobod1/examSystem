@@ -42,3 +42,9 @@ The Laravel framework is open-sourced software licensed under the [MIT license](
     1、新增题库是否为零检测，如果题库为空，禁止管理员开启系统
     2、新增实时检测在线做题的学生数量功能。
     
+* V1.2.0
+
+
+    新增功能：
+    1、自动交卷
+    2、清除误操作导致的零分
