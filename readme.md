@@ -49,3 +49,11 @@ The Laravel framework is open-sourced software licensed under the [MIT license](
     1、自动交卷
     2、清除误操作导致的零分
     3、新增历史试卷显示答题成绩
+
+* V1.2.1
+
+
+    新增功能：
+    1、后台会员列表中显示正在做题的试卷
+    2、后台首页添加清理错误试卷的功能
+    3、服务器性能优化，访问速度提升1秒

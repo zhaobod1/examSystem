@@ -43,7 +43,15 @@
             @endif
             <p>{{ date('Y 年 m 月 d 日', time()) }}</p>
         </div>
-
+        <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+        <script>
+            $(".btn-primary").click(function (e) {
+              e.preventDefault();
+              if (confirm("确定 " + $(this).text() + " 吗？")) {
+                window.location.href = $(this).attr("href");
+              }
+            })
+        </script>
     </div>
     <!--巨幕 end -->
 

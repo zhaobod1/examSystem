@@ -66,7 +66,7 @@
                 <li class="active"><a href="/">首页</a></li>
                 <li><a href="{{ url('usercenter') }}">个人中心</a></li>
                 <li ><a href="{{ url('recentPapers') }}">历史答题</a></li>
-                <li><a href="{{ url('startexam') }}">开始答题</a></li>
+                <li><a id="startExamLink" href="{{ url('startexam') }}">开始答题</a></li>
                 @include('home.common.support')
                 <li><a href="{{ url('quit') }}">退出</a></li>
             </ul>
@@ -133,7 +133,13 @@
             if (confirm('确认交卷?')) {
                 window.location.href=$(this).attr('href');
             }
-        })
+        });
+      $("#startExamLink").click(function (e) {
+        e.preventDefault();
+        if (confirm("确定 " + $(this).text() + " 吗？")) {
+          window.location.href = $(this).attr("href");
+        }
+      })
     })
 
 </script>
