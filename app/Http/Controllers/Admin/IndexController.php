@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Model\PaperInfo;
+use App\Http\Model\PaperQuestion;
 use App\Http\Model\QuestConfig;
 use App\Http\Model\User;
 use Illuminate\Http\Request;
@@ -26,6 +28,23 @@ class IndexController extends CommonController
         return view('admin.info');
     }
 
+	public function clearErrorPapers()
+	{
+
+		$sysExamTime = intval($this->getExamTime()) * 60;
+		$currentTime = time();
+		//现在的时间减去系统规定的时间
+		$startTime = $currentTime - $sysExamTime;
+		$papers = PaperInfo::whereRaw("updated_at=? and total_score=? and created_at <?", [0, 0, $startTime])
+			->get();
+		/** @var PaperInfo $paper */
+		foreach ($papers as $paper) {
+			PaperQuestion::where("paper_id", $paper->paper_id)->delete();
+			$paper->delete();
+			$paper->update();
+		}
+		dd("清理成功");
+	}
     public function password()
     {
 

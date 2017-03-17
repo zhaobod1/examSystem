@@ -23,7 +23,15 @@
                 <a href="{{ url('admin/question/create') }}"><i class="fa fa-plus"></i>新增题目</a>
                 <a href="{{ url('admin/users/create') }}"><i class="fa fa-user-plus"></i>新增会员</a>
                 <a href="{{ url('admin/users') }}"><i class="fa fa-users"></i>会员列表</a>
+                <a id="clearErrorPapers" href="{{ url('admin/sys/clearerrorpapers') }}"><i class="fa fa-fw fa-cubes"></i>清理错误试卷</a>
             </div>
+            <script>
+                $("#clearErrorPapers").click(function () {
+                  $(this).attr("disabled", "disabled");
+                  $str='<i class="fa fa-fw fa-cubes"></i>清理中,请耐心等待....';
+                  $(this).text($str);
+                })
+            </script>
         </div>
     </div>
     <!--结果集标题与导航组件 结束-->
