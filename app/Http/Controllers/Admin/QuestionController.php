@@ -92,6 +92,7 @@ class QuestionController extends CommonController
 
 	public function analysis()
 	{
+		$this->checkOnLineExamTime();
 		//判断是否有人没有交卷
 		$usersHasExamTime = User::whereRaw("start_exam > ? and user_check=?", [0, 1])
 			->get();

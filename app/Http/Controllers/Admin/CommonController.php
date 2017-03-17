@@ -41,6 +41,9 @@ class CommonController extends Controller
 		return $examTime;
 	}
 
+	/**
+	 * 检测失误的操作导致的0分试卷
+	 */
 	public function checkOnLineExamTime()
 	{
 
