@@ -41,7 +41,7 @@
             <div class="result_content">
                 <div class="short_wrap">
                     <a id="exportReport" href="{{ url('admin/question/exportAnalysis') }}"><i class="fa fa-bar-chart"></i>导出报表(并查看正在答题的学生)</a>
-                    <a style="display: none;" id="waitBtn" href="javascript:;"><i class="fa fa-bar-chart"></i>正在导出...</a>
+                    <a style="display: none;" id="waitBtn" href="javascript:;"><i class="fa fa-bar-chart"></i>正在导出(自动交卷、数据统计中)，请等待60秒...</a>
                     <a href="{{ url('admin/question/create') }}"><i class="fa fa-plus"></i>新增题目</a>
                     <a id="out_put" href="#"><i class="fa fa-recycle"></i>批量出库</a>
                     <a id="laid_in" href="#"><i class="fa fa-refresh"></i>批量入库</a>
@@ -86,7 +86,7 @@
                           $('#exportReport').click(function (e) {
                             $(this).hide();
                             $("#waitBtn").show();
-                            setTimeout(openExport, 30000);
+                            setTimeout(openExport, 70000);
                           });
                           function openExport() {
                             $('#exportReport').show();
