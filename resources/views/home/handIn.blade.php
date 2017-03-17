@@ -34,7 +34,7 @@
             </div>
             <div class="panel-footer">
                 <a href="{{ url('recentPapers') }}" class="btn btn-primary">历史答题</a>
-                <a href="{{ url('index') }}" class="btn btn-primary">返回首页</a>
+                <a href="{{ url('/') }}" class="btn btn-primary">返回首页</a>
             </div>
 
         </div>
