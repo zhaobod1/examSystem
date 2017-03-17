@@ -31,7 +31,7 @@ class IndexController extends CommonController
 			$userCheck = '微信答题系统 版本1.1.4 管理员审核通过才可以答题! 右上角菜单按钮联系管理员。';
 			$isChecked = false;
 		} else {
-			$userCheck = '微信答题系统 版本1.1.4';
+			$userCheck = '微信答题系统 版本1.2.1';
 			$isChecked = true;
 
 		}
