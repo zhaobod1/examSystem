@@ -8,24 +8,30 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Redirect;
 use Ixudra\Curl\Facades\Curl;
 
 class WeChatController extends CommonController
 {
 
 	private $appid = 'wxc5ee40750ec3fd1a';
-	private $appsecret = 'dee2649fc3c43f61e929f0bdbfec6949';
+	private $appsecret = '0d8432fcde70fd8b3f38e5aa8be248eb';
 	public $curlObj = '';
+
 	//获取用户的openid
-	public function baseInfo()
+	public function getBaseInfo()
 	{
 
 		//1.获取code
 		$redirect_uri = urlencode('http://q.huo15.com/wechat/getCode');
 		$scope = 'snsapi_base';
-		$url = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=' . $this->appid . '&redirect_uri=' . $redirect_uri. '&response_type=code&scope=' . $scope . '&state=STATE#wechat_redirect';
-		header('location:' . $url);
+		$url = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=' . $this->appid . '&redirect_uri=' . $redirect_uri . '&response_type=code&scope=' . $scope . '&state=STATE#wechat_redirect';
+		//header('location:' . $url);
+		return Redirect::to($url, 301);
 	}
+
+
+
 
 	//获取openId  getCode()
 	public function getUserOpenId()
@@ -33,7 +39,7 @@ class WeChatController extends CommonController
 		//2.获取网页授权的access_token
 
 		$code = trim($_GET['code']);
-		$url = 'https://api.weixin.qq.com/sns/oauth2/access_token?appid='.$this->appid.'&secret=' .$this->appsecret. '&code='.$code.'&grant_type=authorization_code';
+		$url = 'https://api.weixin.qq.com/sns/oauth2/access_token?appid=' . $this->appid . '&secret=' . $this->appsecret . '&code=' . $code . '&grant_type=authorization_code';
 
 		//3.拉取用户的openid
 
@@ -56,8 +62,8 @@ class WeChatController extends CommonController
 		//2-1.获取code
 		$redirect_uri = urlencode('http://q.huo15.com/wechat/getUserInfo');
 		$scope = 'snsapi_userinfo';
-		$url = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=' . $this->appid . '&redirect_uri=' . $redirect_uri. '&response_type=code&scope=' . $scope . '&state=STATE#wechat_redirect';
-		header('location:' . $url);
+		$url = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=' . $this->appid . '&redirect_uri=' . $redirect_uri . '&response_type=code&scope=' . $scope . '&state=STATE#wechat_redirect';
+		return Redirect::to($url, 301);
 	}
 
 	public function getUserInfo(Request $request)
@@ -124,9 +130,6 @@ class WeChatController extends CommonController
 		}
 
 
-
-
-
 		/*
 		 * {    "openid":" OPENID",
 				 "nickname": NICKNAME,
@@ -141,7 +144,6 @@ class WeChatController extends CommonController
 		 */
 
 	}
-
 
 
 }

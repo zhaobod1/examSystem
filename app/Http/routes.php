@@ -91,10 +91,10 @@ Route::group(['middleware' => ['web'], 'namespace' => 'Home'], function () {
     Route::any('/sendsms', 'LoginController@sendSms');
     Route::any('/findpsw', 'LoginController@findpsw');
 	//wechat
-	Route::get('wechat/baseInfo', 'WeChatController@baseInfo'); //基本信息获取
-	Route::get('wechat/getCode', 'WeChatController@getUserOpenId');
-	Route::get('wechat/getUserDetail', 'WeChatController@getUserDetail'); //用户相信信息获取
-	Route::get('wechat/getUserInfo', 'WeChatController@getUserInfo');
+	Route::any('wechat/getBaseInfo', 'WeChatController@getBaseInfo'); //基本信息获取
+	Route::any('wechat/getCode', 'WeChatController@getUserOpenId');
+	Route::any('wechat/getUserDetail', 'WeChatController@getUserDetail'); //用户相信信息获取
+	Route::any('wechat/getUserInfo', 'WeChatController@getUserInfo');
 });
 
 Route::group(['middleware' => ['web', 'home.login'], 'namespace' => 'Home'], function () {
