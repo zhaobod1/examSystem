@@ -54,7 +54,7 @@
                     <tr>
                         <td>
                             <span style="color:#177bb1">
-                                您的答案是：{{ $paperQuestion->quest_answer ? $paperQuestion->quest_answer : "您未答题" }}
+                                您的答案是：{{ $paperQuestion->quest_answer!=="" ? $paperQuestion->quest_answer : "您未答题" }}
                             </span>
                         </td>
                         <td>

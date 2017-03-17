@@ -22,7 +22,7 @@
                             </option>
                             <option {{ $category == 1 ?  'selected = "selected"' : '' }} value="1">已审核会员
                             </option>
-                            <option {{ $category == 0 ?  'selected = "selected"' : '' }} value="0">未审核会员
+                            <option {{ $category === '0' ?  'selected = "selected"' : '' }} value="0">未审核会员
                             </option>
                         </select>
                     </td>
